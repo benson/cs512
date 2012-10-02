@@ -1,0 +1,4 @@
+java -Djava.rmi.server.codebase=file:$HOMcomp512/servercode/ -Djava.security.policy=file:$HOME/comp512/servercode/java.policy ResImpl.ResourceManagerImpl
+
+java -Djava.security.policy=file:$HOME/co12/clientsrc/java.policy client willy
+

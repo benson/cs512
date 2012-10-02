@@ -1,0 +1,5 @@
+grant codeBase "file:$HOME/cs512/clientsrc" {
+    permission java.security.AllPermission;
+};
+
+
