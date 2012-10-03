@@ -45,7 +45,7 @@ public interface ResourceManager extends Remote
      * instead of a flight number.
      */
     public boolean addRooms(int id, String location, int numRooms, int price) 
-	throws RemoteException; 			    
+	throws RemoteException;
 
 			    
     /* new customer just returns a unique customer identifier */
