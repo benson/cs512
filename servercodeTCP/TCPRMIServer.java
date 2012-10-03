@@ -44,96 +44,100 @@ private class ClientHandler implements Thread {
         output = ObjectOutputStream(connection.getOutputStream());
     }
 
+    private void run() {
+        while (true) output.writeObject(handleCall(input.readObject()));
+    }
+
     private Serializable handleCall(MethodCall call) {
         Vector args = call.arguments;
         switch (call.method) {
         case ADD_FLIGHT:
-            return Boolean(addFlight(((Integer) args.get(0)).intValue,
-                                     ((Integer) args.get(1)).intValue,
-                                     ((Integer) args.get(2)).intValue,
-                                     ((Integer) args.get(3)).intValue));
+            return Boolean(addFlight(((Integer) args.get(0)).intValue(),
+                                     ((Integer) args.get(1)).intValue(),
+                                     ((Integer) args.get(2)).intValue(),
+                                     ((Integer) args.get(3)).intValue()));
             break;
         case ADD_CARS:
-            return Boolean(addCars(((Integer) args.get(0)).intValue,
+            return Boolean(addCars(((Integer) args.get(0)).intValue(),
                                     (String) args.get(1),
-                                    ((Integer) args.get(2)).intValue,
-                                    ((Integer) args.get(3)).intValue));
+                                    ((Integer) args.get(2)).intValue(),
+                                   ((Integer) args.get(3)).intValue()));
             break;
         case ADD_ROOMS:
-            return Boolean(addRooms(((Integer) args.get(0)).intValue,
+            return Boolean(addRooms(((Integer) args.get(0)).intValue(),
                                     (String) args.get(1),
-                                    ((Integer) args.get(2)).intValue,
-                                    ((Integer) args.get(3)).intValue));
+                                    ((Integer) args.get(2)).intValue(),
+                                    ((Integer) args.get(3)).intValue()));
             break;
         case NEW_CUSTOMER1:
-            return Integer(newCustomer(((Integer) args.get(0)).intValue));
+            return Integer(newCustomer(((Integer) args.get(0)).intValue()));
             break;
         case NEW_CUSTOMER2:
-            return Integer(newCustomer(((Integer) args.get(0)).intValue,
-                                        ((Integer) args.get(1)).intValue));
+            return Integer(newCustomer(((Integer) args.get(0)).intValue(),
+                                        ((Integer) args.get(1)).intValue()));
             break;
         case DELETE_FLIGHT:
-            return Boolean(deleteFlight(((Integer) args.get(0)).intValue,
-                                        ((Integer) args.get(1)).intValue));
+            return Boolean(deleteFlight(((Integer) args.get(0)).intValue(),
+                                        ((Integer) args.get(1)).intValue()));
             break;
         case DELETE_CARS:
-            return Boolean(deleteCars(((Integer) args.get(0)).intValue,
+            return Boolean(deleteCars(((Integer) args.get(0)).intValue(),
                                         (String) args.get(1));
             break;
         case DELETE_ROOMS:
-            return Boolean(deleteRooms(((Integer) args.get(0)).intValue,
+            return Boolean(deleteRooms(((Integer) args.get(0)).intValue(),
                                         (String) args.get(1));
             break;
         case DELETE_CUSTOMER:
-            return Boolean(deleteCustomer(((Integer) args.get(0)).intValue,
-                                        ((Integer) args.get(1)).intValue));
+            return Boolean(deleteCustomer(((Integer) args.get(0)).intValue(),
+                                        ((Integer) args.get(1)).intValue()));
             break;
         case QUERY_FLIGHT:
-            return Integer(queryFlight(((Integer) args.get(0)).intValue,
-                                        ((Integer) args.get(1)).intValue));
+            return Integer(queryFlight(((Integer) args.get(0)).intValue(),
+                                        ((Integer) args.get(1)).intValue()));
             break;
         case QUERY_CARS:
-            return Integer(queryCars(((Integer) args.get(0)).intValue,
+            return Integer(queryCars(((Integer) args.get(0)).intValue(),
                                         (String) args.get(1));
             break;
         case QUERY_ROOMS:
-            return Integer(queryRooms(((Integer) args.get(0)).intValue,
+            return Integer(queryRooms(((Integer) args.get(0)).intValue(),
                                         (String) args.get(1));
             break;
         case QUERY_CUSTOMER_INFO:
-            return String(queryCustomerInfo(((Integer) args.get(0)).intValue,
-                                        ((Integer) args.get(1)).intValue));
+            return String(queryCustomerInfo(((Integer) args.get(0)).intValue(),
+                                        ((Integer) args.get(1)).intValue()));
             break;
         case QUERY_FLIGHT_PRICE:
-            return Integer(queryFlightPrice(((Integer) args.get(0)).intValue,
-                                        ((Integer) args.get(1)).intValue));
+            return Integer(queryFlightPrice(((Integer) args.get(0)).intValue(),
+                                        ((Integer) args.get(1)).intValue()));
             break;
         case QUERY_CARS_PRICE:
-            return Integer(queryCarsPrice(((Integer) args.get(0)).intValue,
+            return Integer(queryCarsPrice(((Integer) args.get(0)).intValue(),
                                         (String) args.get(1)));
             break;
         case QUERY_ROOMS_PRICE:
-            return Integer(queryRoomsPrice(((Integer) args.get(0)).intValue,
+            return Integer(queryRoomsPrice(((Integer) args.get(0)).intValue(),
                                         (String) args.get(1)));
             break;
         case RESERVE_FLIGHT:
-            return Boolean(reserveFlight(((Integer) args.get(0)).intValue,
-                                        ((Integer) args.get(1)).intValue,
-                                        ((Integer) args.get(2)).intValue));
+            return Boolean(reserveFlight(((Integer) args.get(0)).intValue(),
+                                        ((Integer) args.get(1)).intValue(),
+                                        ((Integer) args.get(2)).intValue()));
             break;
         case RESERVE_CAR:
-            return Boolean(reserveCar(((Integer) args.get(0)).intValue,
-                                        ((Integer) args.get(1)).intValue,
+            return Boolean(reserveCar(((Integer) args.get(0)).intValue(),
+                                        ((Integer) args.get(1)).intValue(),
                                         (String) args.get(2)));
             break;
         case RESERVE_ROOM:
-            return Boolean(reserveRoom(((Integer) args.get(0)).intValue,
-                                        ((Integer) args.get(1)).intValue,
+            return Boolean(reserveRoom(((Integer) args.get(0)).intValue(),
+                                        ((Integer) args.get(1)).intValue(),
                                         (String) args.get(2)));
             break;
         case ITINERARY:
-            return Boolean(itinerary(((Integer) args.get(0)).intValue,
-                                        ((Integer) args.get(1)).intValue,
+            return Boolean(itinerary(((Integer) args.get(0)).intValue(),
+                                        ((Integer) args.get(1)).intValue(),
                                         (Vector) args.get(2),
                                         (String) args.get(3),
                                         (Boolean) args.get(4),
