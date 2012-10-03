@@ -1,4 +1,15 @@
-java -Djava.rmi.server.codebase=file:$HOME/comp512/servercode/ -Djava.security.policy=file:$HOME/comp512/servercode/java.policy ResImpl.ResourceManagerImpl
+export CLASSPATH=$HOME/cs512/servercode
 
-java -Djava.security.policy=file:$HOME/co12/clientsrc/java.policy client willy
+java -Djava.rmi.server.codebase=file:$HOME/comp512/servercode/ -Djava.security.policy=file:$HOME/comp512/servercode/java.policy ResImpl.ResourceManagerImpl
+java -Djava.rmi.server.codebase=file:$HOME/comp512/servercode/ -Djava.security.policy=file:$HOME/comp512/servercode/java.policy ResImpl.ResourceManagerImpl Group7FlightRM
+java -Djava.rmi.server.codebase=file:$HOME/comp512/servercode/ -Djava.security.policy=file:$HOME/comp512/servercode/java.policy ResImpl.ResourceManagerImpl Group7RoomRM
+java -Djava.rmi.server.codebase=file:$HOME/comp512/servercode/ -Djava.security.policy=file:$HOME/comp512/servercode/java.policy ResImpl.ResourceManagerImpl Group7CarRM
+
+
+export CLASSPATH=$HOME/cs512/clientsrc:$HOME/cs512/clientsrc/ResInterface.jar
+
+
+java -Djava.security.policy=file:$HOME/cs512/clientsrc/java.policy client willy
+
+java -Djava.rmi.server.codebase=file:$HOME/comp512/servercode/ -Djava.security.policy=file:$HOME/comp512/servercode/java.policy ResImpl.Middleware localhost Group7FlightRM Group7RoomRM Group7CarRM
 

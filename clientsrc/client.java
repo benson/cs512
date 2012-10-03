@@ -176,14 +176,22 @@ public class client
 		    break;
 		    
 		case 5:  //new Customer
-		    if(arguments.size()!=2){
+		    if(arguments.size()!=2 && arguments.size()!=3){
 			obj.wrongNumber();
 			break;
 		    }
 		    System.out.println("Adding a new Customer using id:"+arguments.elementAt(1));
 		    try{
-			Id = obj.getInt(arguments.elementAt(1));
-			int customer=rm.newCustomer(Id);
+            int customer;
+            boolean isCustomer=false;
+    		Id = obj.getInt(arguments.elementAt(1));
+            if(arguments.size()==2){
+    			customer=rm.newCustomer(Id);
+			}else{
+			    Cid = obj.getInt(arguments.elementAt(2));
+			    isCustomer=rm.newCustomer(Id, Cid);
+			    customer = isCustomer ? Cid : 0;
+			}
 			System.out.println("new customer id:"+customer);
 		    }
 		    catch(Exception e){

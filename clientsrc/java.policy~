@@ -1,5 +1,0 @@
-grant codeBase "file:/home/2010/bperry2/cs512/clientsrc" {
-    permission java.security.AllPermission;
-};
-
-
