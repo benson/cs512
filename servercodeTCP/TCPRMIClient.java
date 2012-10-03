@@ -33,7 +33,6 @@ public class MethodCall implements Serializable {
     }
 }
 
-// client
 public class TCPRMIClient implements TCPResourceManager {
     private Socket connection;
     private ObjectInputStream input;
@@ -45,110 +44,110 @@ public class TCPRMIClient implements TCPResourceManager {
         output = new ObjectOutputStream(connection.getOutputStream());        
     }
 
-    private Serializable callMethod(MethodCall call) {
-        output.writeObject(call);
-        // block
+    // NOTE: returned object will need to be cast to the appropriate class.
+    // If a primitive type is desired, that value must also be extracted.
+    private Serializable callMethod(int method, Object[] args) {
+        output.writeObject(new MethodCall(method, new Vector(args)));
         return input.readObject();
-        // note: return value will need to be cast to the appropriate type
     }
 
     public boolean addFlight(int id, int flightNum, int flightSeats, int flightPrice) throws RemoteException {
         Object[] argsArray = {Integer(id), Integer(flightNum), Integer(flightSeats), Integer(flightPrice)};
-        return callMethod(new MethodCall(ADD_FLIGHT, new Vector(argsArray));
+        return ((Boolean) callMethod(ADD_FLIGHT, argsArray)).booleanValue();
     }
     
     public boolean addCars(int id, String location, int numCars, int price) throws RemoteException {
         Object[] argsArray = {Integer(id), location, Integer(numCars), Integer(price)};
-        return callMethod(new MethodCall(ADD_CARS, new Vector(argsArray));
+        return ((Boolean) callMethod(ADD_CARS, argsArray)).booleanValue();
     }
-   
+
     public boolean addRooms(int id, String location, int numRooms, int price) throws RemoteException {
         Object[] argsArray = {Integer(id), location, Integer(numRooms), Integer(price)};
-        return callMethod(new MethodCall(ADD_ROOMS, new Vector(argsArray));
+        return ((Boolean) callMethod(ADD_ROOMS, argsArray)).booleanValue();
     }
 
     public int newCustomer(int id) throws RemoteException {
         Object[] argsArray = {Integer(id)};
-        return callMethod(new MethodCall(NEW_CUSTOMER1, new Vector(argsArray));
+        return ((Integer) callMethod(NEW_CUSTOMER1, argsArray)).intValue();
     }
     
     public boolean newCustomer(int id, int cid)throws RemoteException {
         Object[] argsArray = {Integer(id), Integer(cid) };
-        return callMethod(new MethodCall(NEW_CUSTOMER2, new Vector(argsArray));
+        return ((Boolean) callMethod(NEW_CUSTOMER2, argsArray)).booleanValue();
     }
 
     public boolean deleteFlight(int id, int flightNum) throws RemoteException {
         Object[] argsArray = {Integer(id), Integer(flightNum)};
-        return callMethod(new MethodCall(DELETE_FLIGHT, new Vector(argsArray));
+        return ((Boolean) callMethod(DELETE_FLIGHT, argsArray))).booleanValue();
     }
     
     public boolean deleteCars(int id, String location) throws RemoteException {
         Object[] argsArray = {Integer(id), location};
-        return callMethod(new MethodCall(DELETE_CARS, new Vector(argsArray));
+        return ((Boolean) callMethod(DELETE_CARS, argsArray)).booleanValue();
     }
 
     public boolean deleteRooms(int id, String location) throws RemoteException {
         Object[] argsArray = {Integer(id), location};
-        return callMethod(new MethodCall(DELETE_ROOMS, new Vector(argsArray));
+        return ((Boolean) callMethod(DELETE_ROOMS, argsArray)).booleanValue();
     }
     
     public boolean deleteCustomer(int id,int customer) throws RemoteException {
         Object[] argsArray = {Integer(id), Integer(customer)};
-        return callMethod(new MethodCall(DELETE_CUSTOMER, new Vector(argsArray));
+        return ((Boolean) callMethod(DELETE_CUSTOMER, argsArray)).booleanValue();
     }
 
     public int queryFlight(int id, int flightNumber) throws RemoteException {
         Object[] argsArray = {Integer(id), Integer(flightNumber)};
-        return callMethod(new MethodCall(QUERY_FLIGHT, new Vector(argsArray));
+        return ((Integer) callMethod(QUERY_FLIGHT, argsArray)).intValue();
     }
 
     public int queryCars(int id, String location) throws RemoteException {
         Object[] argsArray = {Integer(id), location};
-        return callMethod(new MethodCall(QUERY_CARS, new Vector(argsArray));
+        return ((Integer) callMethod(QUERY_CARS, argsArray)).intValue();
     }
 
     public int queryRooms(int id, String location) throws RemoteException {
         Object[] argsArray = {Integer(id), location};
-        return callMethod(new MethodCall(QUERY_ROOMS, new Vector(argsArray));
+        return ((Integer) callMethod(QUERY_ROOMS, argsArray)).intValue();
     }
 
     public String queryCustomerInfo(int id,int customer) throws RemoteException {
         Object[] argsArray = {Integer(id), Integer(customer)};
-        return callMethod(new MethodCall(QUERY_CUSTOMER_INFO, new Vector(argsArray));
+        return (String) callMethod(QUERY_CUSTOMER_INFO, argsArray);
     }
     
     public int queryFlightPrice(int id, int flightNumber) throws RemoteException {
         Object[] argsArray = {Integer(id), Integer(flightNumber)};
-        return callMethod(new MethodCall(QUERY_FLIGHT_PRICE, new Vector(argsArray));
+        return ((Integer) callMethod(QUERY_FLIGHT_PRICE, argsArray)).intValue();
     }
 
     public int queryCarsPrice(int id, String location) throws RemoteException {
         Object[] argsArray = {Integer(id), location};
-        return callMethod(new MethodCall(QUERY_CARS_PRICE, new Vector(argsArray));
+        return ((Integer) callMethod(QUERY_CARS_PRICE, argsArray)).intValue();
     }
 
     public int queryRoomsPrice(int id, String location) throws RemoteException {
         Object[] argsArray = {Integer(id), location};
-        return callMethod(new MethodCall(QUERY_ROOMS_PRICE, new Vector(argsArray));
+        return ((Integer) callMethod(QUERY_ROOMS_PRICE, argsArray)).intValue();
     }
 
     public boolean reserveFlight(int id, int customer, int flightNumber) throws RemoteException {
         Object[] argsArray = {Integer(id), Integer(customer), Integer(flightNumber)};
-        return callMethod(new MethodCall(RESERVE_FLIGHT, new Vector(argsArray));
+        return ((Boolean) callMethod(RESERVE_FLIGHT, argsArray)).booleanValue();
     }
 
     public boolean reserveCar(int id, int customer, String location) throws RemoteException {
         Object[] argsArray = {Integer(id), Integer(customer), location};
-        return callMethod(new MethodCall(RESERVE_CAR, new Vector(argsArray));
+        return ((Boolean) callMethod(RESERVE_CAR, argsArray)).booleanValue();
     }
 
     public boolean reserveRoom(int id, int customer, String location) throws RemoteException {
         Object[] argsArray = {Integer(id), Integer(customer), location};
-        return callMethod(new MethodCall(RESERVE_ROOM, new Vector(argsArray));
+        return ((Boolean) callMethod(RESERVE_ROOM, argsArray)).booleanValue();
     }
 
-    public boolean itinerary(int id,int customer,Vector flightNumbers,String location, boolean Car, boolean Room) throws RemoteException {
+    public boolean itinerary(int id, int customer, Vector flightNumbers, String location, boolean Car, boolean Room) throws RemoteException {
         Object[] argsArray = {Integer(id), Integer(customer), flightNumbers, location, Car, Room};
-        return callMethod(new MethodCall(INTINERARY, new Vector(argsArray));
+        return ((Boolean) callMethod(INTINERARY, argsArray)).booleanValue();
     }
 }
