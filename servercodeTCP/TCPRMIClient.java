@@ -58,78 +58,97 @@ public class TCPRMIClient implements TCPResourceManager {
     }
     
     public boolean addCars(int id, String location, int numCars, int price) throws RemoteException {
-
+        Object[] argsArray = {Integer(id), location, Integer(numCars), Integer(price)};
+        return callMethod(new MethodCall(ADD_CARS, new Vector(argsArray));
     }
    
     public boolean addRooms(int id, String location, int numRooms, int price) throws RemoteException {
-
+        Object[] argsArray = {Integer(id), location, Integer(numRooms), Integer(price)};
+        return callMethod(new MethodCall(ADD_ROOMS, new Vector(argsArray));
     }
 
     public int newCustomer(int id) throws RemoteException {
-
+        Object[] argsArray = {Integer(id)};
+        return callMethod(new MethodCall(NEW_CUSTOMER1, new Vector(argsArray));
     }
     
     public boolean newCustomer(int id, int cid)throws RemoteException {
-
+        Object[] argsArray = {Integer(id), Integer(cid) };
+        return callMethod(new MethodCall(NEW_CUSTOMER2, new Vector(argsArray));
     }
 
     public boolean deleteFlight(int id, int flightNum) throws RemoteException {
-
+        Object[] argsArray = {Integer(id), Integer(flightNum)};
+        return callMethod(new MethodCall(DELETE_FLIGHT, new Vector(argsArray));
     }
     
     public boolean deleteCars(int id, String location) throws RemoteException {
-
+        Object[] argsArray = {Integer(id), location};
+        return callMethod(new MethodCall(DELETE_CARS, new Vector(argsArray));
     }
 
     public boolean deleteRooms(int id, String location) throws RemoteException {
-
+        Object[] argsArray = {Integer(id), location};
+        return callMethod(new MethodCall(DELETE_ROOMS, new Vector(argsArray));
     }
     
     public boolean deleteCustomer(int id,int customer) throws RemoteException {
-
+        Object[] argsArray = {Integer(id), Integer(customer)};
+        return callMethod(new MethodCall(DELETE_CUSTOMER, new Vector(argsArray));
     }
 
     public int queryFlight(int id, int flightNumber) throws RemoteException {
-
+        Object[] argsArray = {Integer(id), Integer(flightNumber)};
+        return callMethod(new MethodCall(QUERY_FLIGHT, new Vector(argsArray));
     }
 
     public int queryCars(int id, String location) throws RemoteException {
-
+        Object[] argsArray = {Integer(id), location};
+        return callMethod(new MethodCall(QUERY_CARS, new Vector(argsArray));
     }
 
     public int queryRooms(int id, String location) throws RemoteException {
-
+        Object[] argsArray = {Integer(id), location};
+        return callMethod(new MethodCall(QUERY_ROOMS, new Vector(argsArray));
     }
 
     public String queryCustomerInfo(int id,int customer) throws RemoteException {
-
+        Object[] argsArray = {Integer(id), Integer(customer)};
+        return callMethod(new MethodCall(QUERY_CUSTOMER_INFO, new Vector(argsArray));
     }
     
     public int queryFlightPrice(int id, int flightNumber) throws RemoteException {
-
+        Object[] argsArray = {Integer(id), Integer(flightNumber)};
+        return callMethod(new MethodCall(QUERY_FLIGHT_PRICE, new Vector(argsArray));
     }
 
     public int queryCarsPrice(int id, String location) throws RemoteException {
-
+        Object[] argsArray = {Integer(id), location};
+        return callMethod(new MethodCall(QUERY_CARS_PRICE, new Vector(argsArray));
     }
 
     public int queryRoomsPrice(int id, String location) throws RemoteException {
-
+        Object[] argsArray = {Integer(id), location};
+        return callMethod(new MethodCall(QUERY_ROOMS_PRICE, new Vector(argsArray));
     }
 
     public boolean reserveFlight(int id, int customer, int flightNumber) throws RemoteException {
-
+        Object[] argsArray = {Integer(id), Integer(customer), Integer(flightNumber)};
+        return callMethod(new MethodCall(RESERVE_FLIGHT, new Vector(argsArray));
     }
 
     public boolean reserveCar(int id, int customer, String location) throws RemoteException {
-
+        Object[] argsArray = {Integer(id), Integer(customer), location};
+        return callMethod(new MethodCall(RESERVE_CAR, new Vector(argsArray));
     }
 
-    public boolean reserveRoom(int id, int customer, String locationd) throws RemoteException {
-
+    public boolean reserveRoom(int id, int customer, String location) throws RemoteException {
+        Object[] argsArray = {Integer(id), Integer(customer), location};
+        return callMethod(new MethodCall(RESERVE_ROOM, new Vector(argsArray));
     }
 
     public boolean itinerary(int id,int customer,Vector flightNumbers,String location, boolean Car, boolean Room) throws RemoteException {
-
+        Object[] argsArray = {Integer(id), Integer(customer), flightNumbers, location, Car, Room};
+        return callMethod(new MethodCall(INTINERARY, new Vector(argsArray));
     }
 }
