@@ -294,15 +294,15 @@ public class Middleware implements ResourceManager
 	    boolean boolCar = true;
 	    boolean boolRoom = true;
 	    boolean boolFlights = true;
-	    for (int flightNumber : flightNumbers)
+	    for (int i = 0; i < flightNumbers.size(); i++)
 	    {
-	        boolFlights = flightRM.reserveFlight(id, customer, flightNumber) && boolFlights;
+	        boolFlights = flightRM.reserveFlight(id, customer, Integer.parseInt((String)flightNumbers.get(i))) && boolFlights;
 	    }
 	    
     	if(Car)
     	    boolCar = carRM.reserveCar(id, customer, location);
     	if(Room)
             boolRoom = roomRM.reserveRoom(id, customer, location);
-        return boolFlights && boolCar && boolRoom
+        return boolFlights && boolCar && boolRoom;
     }    
 }
