@@ -296,7 +296,7 @@ public class Middleware implements ResourceManager
 	    boolean boolFlights = true;
 	    for (int i = 0; i < flightNumbers.size(); i++)
 	    {
-	        boolFlights = flightRM.reserveFlight(id, customer, Integer.parseInt((string)flightNumbers.get(i))) && boolFlights;
+	        boolFlights = flightRM.reserveFlight(id, customer, Integer.parseInt((String)flightNumbers.get(i))) && boolFlights;
 	    }
 	    
     	if(Car)

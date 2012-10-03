@@ -1,21 +1,25 @@
-import java.net.Socket;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+package ResImpl;
+
+import java.net.*;
+import java.io.*;
+import java.rmi.RemoteException;
+import java.util.*;
 
 public class ClientHandler extends Thread {
+    private RMHashtable m_itemHT;
     private Socket connection;
     private ObjectInputStream input;
     private ObjectOutputStream output;
     
-    public ClientHandler(Socket connection) {
+    public ClientHandler(Socket connection, RMHashtable table) {
         this.connection = connection;
-        input = ObjectInputStream(connection.getInputStream());
-        output = ObjectOutputStream(connection.getOutputStream());
+        this.m_itemHT = table;
+        input = new ObjectInputStream(connection.getInputStream());
+        output = new ObjectOutputStream(connection.getOutputStream());
     }
 
-    private void run() {
-        while (true) output.writeObject(handleCall(input.readObject()));
+    public void run() {
+        while (true) output.writeObject(handleCall((MethodCall) input.readObject()));
     }
 
     private Serializable handleCall(MethodCall call) {
@@ -43,7 +47,7 @@ public class ClientHandler extends Thread {
             return new Integer(newCustomer(((Integer) args.get(0)).intValue()));
             break;
         case NEW_CUSTOMER2:
-            return new Integer(newCustomer(((Integer) args.get(0)).intValue(),
+            return new Boolean(newCustomer(((Integer) args.get(0)).intValue(),
                                            ((Integer) args.get(1)).intValue()));
             break;
         case DELETE_FLIGHT:

@@ -1,10 +1,13 @@
+package ResImpl;
+
 import java.io.Serializable;
+import java.util.*;
 
 public class MethodCall implements Serializable {
-    public int method;
+    public Methods method;
     public Vector arguments;
 
-    public static MethodCall(int method, Vector arguments) {
+    public static MethodCall(Methods method, Vector arguments) {
         this.method = method;
         this.arguments = arguments;
     }
