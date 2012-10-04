@@ -1,7 +1,3 @@
-package ResInterface;
-
-
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 import java.util.*;
@@ -21,7 +17,7 @@ import java.util.*;
  * has succeeded.
  */
 
-public interface ResourceManager extends Remote 
+public interface TCPResourceManager 
 {
     /* Add seats to a flight.  In general this will be used to create a new
      * flight, but it should be possible to add seats to an existing flight.
@@ -45,7 +41,7 @@ public interface ResourceManager extends Remote
      * instead of a flight number.
      */
     public boolean addRooms(int id, String location, int numRooms, int price) 
-	throws RemoteException; 			    
+	throws RemoteException;
 
 			    
     /* new customer just returns a unique customer identifier */

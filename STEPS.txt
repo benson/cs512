@@ -36,3 +36,21 @@ java -Djava.rmi.server.codebasfile:$HOME/comp512/servercodeTCP/ ResImpl.TCPRMIMi
 // CLIENT
 java -Djava.rmi.server.codebase=file:$HOME/comp512/servercodeTCP/ ResImpl.client willy
 
+
+NEW TCP STEPS
+
+export CLASSPATH=$HOME/cs512/TCP
+
+// first server
+java -Djava.rmi.server.codebasfile:$HOME/comp512/TCP/ TCPRMIServer 2345
+// second
+java -Djava.rmi.server.codebasfile:$HOME/comp512/TCP/ TCPRMIServer 2346
+// third
+java -Djava.rmi.server.codebasfile:$HOME/comp512/TCP/ TCPRMIServer 2347
+
+// MIDDLEWARE
+java -Djava.rmi.server.codebasfile:$HOME/comp512/TCP/ TCPRMIMiddleware 2348 willy 2345 willy 2346 willy 2347
+
+// CLIENT
+java -Djava.rmi.server.codebase=file:$HOME/comp512/TCP/ client willy
+

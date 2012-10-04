@@ -1,5 +1,3 @@
-package ResImpl;
-
 public enum Methods {
     ADD_FLIGHT,
     ADD_CARS,
