@@ -1,0 +1,45 @@
+DESCRIPTION OF DESIGN
+
+In the implementation using Java's RMI implementation, our basic approach
+was for the middleware to implement the ResourceManager interface, and to
+hold three ResourceManager connections (one each for flights, rooms, and
+cars). Each of the methods from the interface (creation, deletion, querying,
+reservation) are implemented by simply passing the request to the appropriate
+ResourceManager, and returning the result. Since the server tracks reservations
+across of all three types for each customer, a solution to synchronize customer
+data was called for. Our approach was to simply make and delete Customer
+objects on all three RMI servers, and have each keep track of only those
+reservations concerning its specialty. When a customer's information is
+requested by a client, the middleware requests that client's reservations from
+each server, and simply appends the results together. Since the disjoint sum of
+the flight, room, and car reservations of a customer is the set of all that
+customer's reservations, the split implementation is effectively hidden from the
+client.
+
+Our TCP RMI implementation is relatively naive. Because we lack the deep Java
+type system magic required to fully reimplement its RMI interface, we had to
+create separate classes for the client and server. The client simply implements 
+a copy of the ResourceManager interface (minus the java RMI voodoo). As a
+protocol for communication between the client and server, we establish a shared
+enum, with one value for each method (and additional values for overloaded 
+methods). We then use a serializable class for a method call, which takes an
+element of the enum of methods, and a vector for the arguments. When a remote
+method is called on the client, it packages the arguments in an instance of the
+MethodCall class, serializes it, and sends it to the corresponding server.
+
+The server, meanwhile, is a raw socket that can accept connections for any
+number of clients. Whenever a client connects, the server spawns a thread
+equipped with all of the methods provided by the interface. Upon receiving a
+seralized method call from its client, a thread looks up the indicated method,
+unpacks the arguments, and sends back a serialized form of the return value. The
+client will then deserialize the value, convert it to a primitive type if
+necessary, and return it to the application that made the original call. Since
+the client-side interface and the server-side method calls are essentially
+identical, we were able to simply reuse the bulk of the code from the first part
+of the assignment, replacing only the parts directly involved with
+communication.
+
+To test our program, we simply wrote an input file, to be piped into the command
+line client, which exercises every method provided by the RMI server. (This file
+has been attached.)
+
