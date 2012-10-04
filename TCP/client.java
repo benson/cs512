@@ -1,5 +1,3 @@
-package ResImpl;
-
 import java.util.*;
 import java.io.*;
 
@@ -39,7 +37,8 @@ public class client
 	    try 
 		{
 		    // get the proxy and the remote reference by rmiregistry lookup
-		    rm = new TCPRMIClient(server, 2469);
+		    rm = new TCPRMIClient(server, 2348);
+		    System.out.println("right after connection");
 		    if(rm!=null)
 			{
 			    System.out.println("Successful");

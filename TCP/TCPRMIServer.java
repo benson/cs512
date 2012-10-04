@@ -1,5 +1,3 @@
-package ResImpl;
-
 import java.util.*;
 import java.rmi.RemoteException;
 import java.net.ServerSocket;
@@ -12,7 +10,7 @@ import ResInterface.*;
 
 public class TCPRMIServer {
     
-    public static void main(String[] args) throws UnknownHostException, IOExcpetion
+    public static void main(String[] args) throws UnknownHostException, IOException
     {
         ServerSocket server;
         int port = 2469;

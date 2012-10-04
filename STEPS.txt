@@ -6,12 +6,14 @@ java -Djava.rmi.server.codebase=file:$HOME/comp512/servercode/ -Djava.security.p
 java -Djava.rmi.server.codebase=file:$HOME/comp512/servercode/ -Djava.security.policy=file:$HOME/comp512/servercode/java.policy ResImpl.ResourceManagerImpl Group7CarRM
 
 
-export CLASSPATH=$HOME/cs512/clientsrc:$HOME/cs512/clientsrc/ResInterface.jar
+java -Djava.rmi.server.codebase=file:$HOME/comp512/servercode/ -Djava.security.policy=file:$HOME/comp512/servercode/java.policy ResImpl.Middleware localhost Group7FlightRM Group7RoomRM Group7CarRM
 
+
+
+export CLASSPATH=$HOME/cs512/clientsrc:$HOME/cs512/clientsrc/ResInterface.jar
 
 java -Djava.security.policy=file:$HOME/cs512/clientsrc/java.policy client willy
 
-java -Djava.rmi.server.codebase=file:$HOME/comp512/servercode/ -Djava.security.policy=file:$HOME/comp512/servercode/java.policy ResImpl.Middleware localhost Group7FlightRM Group7RoomRM Group7CarRM
 
 
 
@@ -19,7 +21,7 @@ java -Djava.rmi.server.codebase=file:$HOME/comp512/servercode/ -Djava.security.p
 
 TCP STEPS
 
-export CLASSPATH=$HOME/cs512/servercodeTCP:$HOME/cs514/servercodeTCP/ResImpl
+export CLASSPATH=$HOME/cs512/TCP
 
 // first server
 java -Djava.rmi.server.codebasfile:$HOME/comp512/servercodeTCP/ ResImpl.TCPRMIServer 2345
