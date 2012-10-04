@@ -1,4 +1,3 @@
-package ResImpl;
 
 public enum Methods {
     ADD_FLIGHT,
