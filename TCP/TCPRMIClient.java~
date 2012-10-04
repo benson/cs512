@@ -3,8 +3,6 @@ import java.io.*;
 import java.net.*;
 import java.rmi.RemoteException;
 
-import ResInterface.*;
-
 // essentially, implement the ResourceManager interface
 
 public class TCPRMIClient implements TCPResourceManager {
