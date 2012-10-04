@@ -1,81 +1,43 @@
 package ResImpl;
 
-import ResInterface.*;
-
-import java.util.*;
-import java.rmi.*;
-
-import java.rmi.registry.Registry;
-import java.rmi.registry.LocateRegistry;
+import java.net.*;
+import java.io.*;
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
+import java.util.*;
 
-public class MiddlewareTCP implements ResourceManager
-{
-    static ResourceManager flightRM = null;
-    static ResourceManager roomRM = null;
-    static ResourceManager carRM = null;
+public class MiddleHandler extends ClientHandler {
+    private TCPRMIClient flightRM;
+    private TCPRMIClient roomRM;
+    private TCPRMIClient carRM;
     
-    public static void main(String args[])
-	{	    
-	    // PARAMS: server_where_rms_are_hosted FlightRM RoomRM CarRM
+    public MiddleHandler(Socket connection, RMHashtable table,
+           TCPRMIClient flightRM, TCPRMIClient roomRM, TCPRMIClient carRM) {
+        super(connection, table);
+        this.flightRM = flightRM;
+        this.roomRM = roomRM;
+        this.carRM = carRM;
 
-        /*  SERVER  */	 
-        try 
-        {
-            // create a new Server object
-            Middleware serverObj = new Middleware();
-            // dynamically generate the stub (client proxy)
-            ResourceManager rm = (ResourceManager) UnicastRemoteObject.exportObject(serverObj, 0);
+    }
 
-            // Bind the remote object's stub in the registry
-            Registry registry = LocateRegistry.getRegistry(2468);
-            registry.rebind("Group7ResourceManager", rm);
+    public boolean itinerary(int id,int customer,Vector flightNumbers,String location,boolean Car,boolean Room)
+        	throws RemoteException {
 
-            System.err.println("Server ready");
-        } 
-        catch (Exception e) 
-        {
-            System.err.println("Server exception: " + e.toString());
-            e.printStackTrace();
-        }
-        
-        
-        /*  CLIENT */
-		if (args.length == 4)
-		{
-		    String server = args[0];
-		    try
-		    {
-		        Registry registry = LocateRegistry.getRegistry(server, 2468);
-		        // get the proxy and the remote reference by rmiregistry lookup
-		        flightRM = (ResourceManager) registry.lookup(args[1]);
-		        roomRM = (ResourceManager) registry.lookup(args[2]);
-		        carRM = (ResourceManager) registry.lookup(args[3]);
-		        if(carRM!=null && flightRM!=null && roomRM!=null)
-			    {
-			        System.out.println("Successful");
-			        System.out.println("Connected to RM");
-			    }
-			    else
-			    {
-			        System.out.println("Unsuccessful");
-			    }
-		    }
-		    catch (Exception e) 
-		    {	
-		        System.err.println("Client exception: " + e.toString());
-		        e.printStackTrace();
-		    }
-		}
-		else
-		{
-		    System.out.println ("Usage: java client rmihost RM1 RM2 RM3 (none are optional)"); 
-			System.exit(1); 
-		}
-	}	 
-	
-	// Create a new flight, or add seats to existing flight
+    	boolean boolCar = true;
+	    boolean boolRoom = true;
+	    boolean boolFlights = true;
+	    for (int i = 0; i < flightNumbers.size(); i++)
+	    {
+	        boolFlights = flightRM.reserveFlight(id, customer, Integer.parseInt((String)flightNumbers.get(i))) && boolFlights;
+	    }
+	    
+    	if(Car)
+    	    boolCar = carRM.reserveCar(id, customer, location);
+    	if(Room)
+            boolRoom = roomRM.reserveRoom(id, customer, location);
+        return boolFlights && boolCar && boolRoom;
+    }
+    
+    // Create a new flight, or add seats to existing flight
 	//  NOTE: if flightPrice <= 0 and the flight already exists, it maintains its current price
 	public boolean addFlight(int id, int flightNum, int flightSeats, int flightPrice)
 		throws RemoteException
@@ -134,19 +96,6 @@ public class MiddlewareTCP implements ResourceManager
 	    return flightRM.queryFlight(id, flightNum);
 		//return queryNum(id, Flight.getKey(flightNum));
 	}
-
-	// Returns the number of reservations for this flight. 
-//	public int queryFlightReservations(int id, int flightNum)
-//		throws RemoteException
-//	{
-//		Trace.info("RM::queryFlightReservations(" + id + ", #" + flightNum + ") called" );
-//		RMInteger numReservations = (RMInteger) readData( id, Flight.getNumReservationsKey(flightNum) );
-//		if( numReservations == null ) {
-//			numReservations = new RMInteger(0);
-//		} // if
-//		Trace.info("RM::queryFlightReservations(" + id + ", #" + flightNum + ") returns " + numReservations );
-//		return numReservations.getValue();
-//	}
 
 
 	// Returns price of this flight
@@ -287,22 +236,4 @@ public class MiddlewareTCP implements ResourceManager
 	    return flightRM.reserveFlight(id, customerID, flightNum);
 		//return reserveItem(id, customerID, Flight.getKey(flightNum), String.valueOf(flightNum));
 	}
-	
-	/* reserve an itinerary */
-    public boolean itinerary(int id,int customer,Vector flightNumbers,String location,boolean Car,boolean Room)
-	throws RemoteException {
-	    boolean boolCar = true;
-	    boolean boolRoom = true;
-	    boolean boolFlights = true;
-	    for (int i = 0; i < flightNumbers.size(); i++)
-	    {
-	        boolFlights = flightRM.reserveFlight(id, customer, Integer.parseInt((String)flightNumbers.get(i))) && boolFlights;
-	    }
-	    
-    	if(Car)
-    	    boolCar = carRM.reserveCar(id, customer, location);
-    	if(Room)
-            boolRoom = roomRM.reserveRoom(id, customer, location);
-        return boolFlights && boolCar && boolRoom;
-    }    
 }

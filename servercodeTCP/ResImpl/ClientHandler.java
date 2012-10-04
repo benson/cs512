@@ -15,8 +15,11 @@ public class ClientHandler extends Thread {
         this.connection = connection;
         this.m_itemHT = table;
         try {
-            input = new ObjectInputStream(connection.getInputStream());
             output = new ObjectOutputStream(connection.getOutputStream());
+            System.err.println("got output? " + (output != null ? "yes" : "no"));
+            output.flush();
+            input = new ObjectInputStream(connection.getInputStream());
+            System.err.println("got input? " + (input != null ? "yes" : "no"));
         } catch (IOException e) {
             System.err.println("Couldn't get in/out streams for handler.");
         }
@@ -130,13 +133,13 @@ public class ClientHandler extends Thread {
                                                ((Integer) args.get(1)).intValue(),
                                                (String) args.get(2)));
                 // break;
-                // case ITINERARY:
-                //     return new Boolean(itinerary(((Integer) args.get(0)).intValue(),
-                //                                  ((Integer) args.get(1)).intValue(),
-                //                                  (Vector) args.get(2),
-                //                                  (String) args.get(3),
-                //                                  (Boolean) args.get(4),
-                //                                  (Boolean) args.get(5)));
+            case ITINERARY:
+                return new Boolean(itinerary(((Integer) args.get(0)).intValue(),
+                                             ((Integer) args.get(1)).intValue(),
+                                             (Vector) args.get(2),
+                                             (String) args.get(3),
+                                             (Boolean) args.get(4),
+                                             (Boolean) args.get(5)));
                 //     break;
             }
         } catch (Exception e) {
@@ -251,6 +254,7 @@ public class ClientHandler extends Thread {
 			} 
 			writeData( id, curObj.getKey(), curObj );
 		} // else
+		System.out.println("Called addFlight!");
 		return(true);
 	}
 
@@ -259,6 +263,7 @@ public class ClientHandler extends Thread {
 	public boolean deleteFlight(int id, int flightNum)
 		throws RemoteException
 	{
+	    System.out.println("Called deleteFlight!");
 		return deleteItem(id, Flight.getKey(flightNum));
 	}
 
@@ -281,6 +286,7 @@ public class ClientHandler extends Thread {
 			} 
 			writeData( id, curObj.getKey(), curObj );
     		} 
+    	System.out.println("Called addRooms!");
 		return(true);
 	}
 
@@ -288,6 +294,7 @@ public class ClientHandler extends Thread {
 	public boolean deleteRooms(int id, String location)
 		throws RemoteException
 	{
+	    System.out.println("Called deleteRooms!");
 		return deleteItem(id, Hotel.getKey(location));
 		
 	}
@@ -310,6 +317,7 @@ public class ClientHandler extends Thread {
 			} // if
 			writeData( id, curObj.getKey(), curObj );
 		} // else
+		System.out.println("Called addCars!");
 		return(true);
 	}
 
@@ -318,6 +326,7 @@ public class ClientHandler extends Thread {
 	public boolean deleteCars(int id, String location)
 		throws RemoteException
 	{
+	    System.out.println("Called deleteCars!");
 		return deleteItem(id, Car.getKey(location));
 	}
 
@@ -327,6 +336,7 @@ public class ClientHandler extends Thread {
 	public int queryFlight(int id, int flightNum)
 		throws RemoteException
 	{
+	    System.out.println("Called queryFlight!");
 		return queryNum(id, Flight.getKey(flightNum));
 	}
 
@@ -334,6 +344,7 @@ public class ClientHandler extends Thread {
 	public int queryFlightPrice(int id, int flightNum )
 		throws RemoteException
 	{
+	    System.out.println("Called queryFlightPrice!");
 		return queryPrice(id, Flight.getKey(flightNum));
 	}
 
@@ -342,6 +353,7 @@ public class ClientHandler extends Thread {
 	public int queryRooms(int id, String location)
 		throws RemoteException
 	{
+	    System.out.println("Called queryRooms!");
 		return queryNum(id, Hotel.getKey(location));
 	}
 
@@ -352,6 +364,7 @@ public class ClientHandler extends Thread {
 	public int queryRoomsPrice(int id, String location)
 		throws RemoteException
 	{
+	    System.out.println("Called queryRoomsPrice!");
 		return queryPrice(id, Hotel.getKey(location));
 	}
 
@@ -360,6 +373,7 @@ public class ClientHandler extends Thread {
 	public int queryCars(int id, String location)
 		throws RemoteException
 	{
+	    System.out.println("Called queryCars!");
 		return queryNum(id, Car.getKey(location));
 	}
 
@@ -368,6 +382,7 @@ public class ClientHandler extends Thread {
 	public int queryCarsPrice(int id, String location)
 		throws RemoteException
 	{
+	    System.out.println("Called queryCarsPrice!");
 		return queryPrice(id, Car.getKey(location));
 	}
 
@@ -381,6 +396,7 @@ public class ClientHandler extends Thread {
 		if( cust == null ) {
 			return null;
 		} else {
+		    System.out.println("Called getReservations!");
 			return cust.getReservations();
 		} // if
 	}
@@ -389,6 +405,7 @@ public class ClientHandler extends Thread {
 	public String queryCustomerInfo(int id, int customerID)
 		throws RemoteException
 	{
+	    System.out.println("Called queryCustomerInfo!");
 		Customer cust = (Customer) readData( id, Customer.getKey(customerID) );
 		if( cust == null ) {
 			return "";   // NOTE: don't change this--WC counts on this value indicating a customer does not exist...
@@ -411,6 +428,7 @@ public class ClientHandler extends Thread {
 								String.valueOf( Math.round( Math.random() * 100 + 1 )));
 		Customer cust = new Customer( cid );
 		writeData( id, cust.getKey(), cust );
+		System.out.println("Called newCustomer!");
 		return cid;
 	}
 
@@ -418,6 +436,7 @@ public class ClientHandler extends Thread {
   public boolean newCustomer(int id, int customerID )
 		throws RemoteException
 	{
+	    System.out.println("Called newCustomer!");
 		Customer cust = (Customer) readData( id, Customer.getKey(customerID) );
 		if( cust == null ) {
 			cust = new Customer(customerID);
@@ -433,6 +452,7 @@ public class ClientHandler extends Thread {
 	public boolean deleteCustomer(int id, int customerID)
 			throws RemoteException
 	{
+	    System.out.println("Called deleteCustomer!");
 		Customer cust = (Customer) readData( id, Customer.getKey(customerID) );
 		if( cust == null ) {
 			return false;
@@ -459,6 +479,7 @@ public class ClientHandler extends Thread {
 	public boolean reserveCar(int id, int customerID, String location)
 		throws RemoteException
 	{
+	    System.out.println("Called reserveCar!");
 		return reserveItem(id, customerID, Car.getKey(location), location);
 	}
 
@@ -467,30 +488,20 @@ public class ClientHandler extends Thread {
 	public boolean reserveRoom(int id, int customerID, String location)
 		throws RemoteException
 	{
+	    System.out.println("Called reserveRoom!");
 		return reserveItem(id, customerID, Hotel.getKey(location), location);
 	}
 	// Adds flight reservation to this customer.  
 	public boolean reserveFlight(int id, int customerID, int flightNum)
 		throws RemoteException
 	{
+	    System.out.println("Called reserveFlight!");
 		return reserveItem(id, customerID, Flight.getKey(flightNum), String.valueOf(flightNum));
 	}
 	
-	// /* reserve an itinerary */
-    // public boolean itinerary(int id,int customer,Vector flightNumbers,String location,boolean Car,boolean Room)
-	// throws RemoteException {
-    // 	boolean boolCar = true;
-	//     boolean boolRoom = true;
-	//     boolean boolFlights = true;
-	//     for (int i = 0; i < flightNumbers.size(); i++)
-	//     {
-	//         boolFlights = flightRM.reserveFlight(id, customer, Integer.parseInt((String)flightNumbers.get(i))) && boolFlights;
-	//     }
-	    
-    // 	if(Car)
-    // 	    boolCar = carRM.reserveCar(id, customer, location);
-    // 	if(Room)
-    //         boolRoom = roomRM.reserveRoom(id, customer, location);
-    //     return boolFlights && boolCar && boolRoom;
-    // }
+	/* reserve an itinerary */
+    public boolean itinerary(int id,int customer,Vector flightNumbers,String location,boolean Car,boolean Room)
+	throws RemoteException {
+        return false;
+    }
 }

@@ -32,7 +32,7 @@ public class ResourceManagerImpl
          }
          else if (args.length == 1)
          {
-         
+            name = args[0];
          } 
          else if (args.length != 2) {
              System.err.println ("Wrong usage");
