@@ -12,12 +12,9 @@ public class TCPRMIClient implements TCPResourceManager {
 
     public TCPRMIClient(String host, int port) throws UnknownHostException, IOException {
         connection = new Socket(host, port);
-        System.out.println("foo");
         output = new ObjectOutputStream(connection.getOutputStream());
         output.flush();
-        System.out.println(output != null ? "foo1" : "bar1");
         input = new ObjectInputStream(connection.getInputStream());
-        System.out.println(input != null ? "foo2" : "bar2");  
     }
 
     // NOTE: returned object will need to be cast to the appropriate class.
