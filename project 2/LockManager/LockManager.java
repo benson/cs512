@@ -65,10 +65,10 @@ public class LockManager
                             // *** ADD CODE HERE *** to carry out the lock conversion in the
                             TrxnObj toRemoveTrxn = (TrxnObj)trxnObj.clone();
                             DataObj toRemoveData = (DataObj)dataObj.clone();
-                            toRemoveTrxn.setLockType(TrxnObj.READ)
-                            toRemoveData.setLockType(DataObj.READ)
-                            this.locktable.remove(toRemoveTrxn);
-                            this.locktable.remove(toRemoveData);
+                            toRemoveTrxn.setLockType(TrxnObj.READ);
+                            toRemoveData.setLockType(DataObj.READ);
+                            this.lockTable.remove(toRemoveTrxn);
+                            this.lockTable.remove(toRemoveData);
                             this.lockTable.add(trxnObj);
                             this.lockTable.add(dataObj);                            
                             // lock table
