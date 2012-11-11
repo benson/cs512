@@ -19,6 +19,7 @@ public class ResourceManagerImpl
 	implements ResourceManager {
 	
 	protected RMHashtable m_itemHT = new RMHashtable();
+	private static TransactionManager tm;
 
 
 	public static void main(String args[]) {
@@ -46,6 +47,7 @@ public class ResourceManagerImpl
 		 ResourceManagerImpl obj = new ResourceManagerImpl();
 		 // dynamically generate the stub (client proxy)
 		 ResourceManager rm = (ResourceManager) UnicastRemoteObject.exportObject(obj, 0);
+		 tm = new TransactionManager();
 		 
 		 // Bind the remote object's stub in the registry
 		 Registry registry = LocateRegistry.getRegistry(2468);
@@ -80,6 +82,7 @@ public class ResourceManagerImpl
 	// Writes a data item
 	private void writeData( int id, String key, RMItem value )
 	{
+		tm.addWriteOperation(id, key, readData(id, key));
 		synchronized(m_itemHT){
 			m_itemHT.put(key, value);
 		}
@@ -480,4 +483,43 @@ public class ResourceManagerImpl
     	return false;
     }
 
+    public void start(int id) throws RemoteException
+    {
+    	tm.start(id);
+    }
+
+    public int start() throws RemoteException
+    {
+    	return 0;
+    }
+
+    public boolean commit(int id) throws RemoteException
+    {
+    	tm.remove(id);
+    	return true;
+    }
+
+    public void abort(int id) throws RemoteException
+    {
+    	Hashtable<String, RMItem> history = tm.getHistory(id);
+    	RMItem previous;
+    	String key;
+    	for (Enumeration e = history.keys(); e.hasMoreElements();)
+    	{
+    		key = (String) e.nextElement();
+    		previous = history.get(key);
+    		if (previous != null)
+    		{
+    			writeData(id, key, previous);
+    		} else {
+    			removeData(id, key);
+    		}
+    	}
+    	tm.remove(id);
+    }
+
+    public boolean shutdown() throws RemoteException
+   	{
+   		return true;
+   	}
 }

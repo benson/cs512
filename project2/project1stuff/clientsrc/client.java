@@ -566,6 +566,15 @@ public class client
 			e.printStackTrace();
 		    }
 		    break;
+		case 23: 	// start
+			transID = rm.start();
+			break;
+		case 24:	// commit
+			rm.commit(transID);	// TODO: get id
+			break;
+		case 25:	// abort
+			rm.abort(transID);	// TODO: get id
+			break;
 		    
 		default:
 		    System.out.println("The interface does not support this command.");
@@ -633,6 +642,12 @@ public class client
 	    return 21;
 	else if (argument.compareToIgnoreCase("newcustomerid")==0)
 	    return 22;
+	else if (argument.compareToIgnoreCase("start")==0)
+	    return 23;
+	else if (argument.compareToIgnoreCase("commit")==0)
+	    return 24;
+	else if (argument.compareToIgnoreCase("abort")==0)
+	    return 25;
 	else
 	    return 666;
 

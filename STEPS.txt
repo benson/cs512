@@ -6,6 +6,32 @@ java -Djava.rmi.server.codebase=file:$HOME/comp512/servercode/ -Djava.security.p
 java -Djava.rmi.server.codebase=file:$HOME/comp512/servercode/ -Djava.security.policy=file:$HOME/comp512/servercode/java.policy ResImpl.ResourceManagerImpl Group7CarRM
 
 
+NEW STUFF FOR PROJECT 2 =============================================================
+
+ssh willy
+cd cs512/project2/project1stuff/servercode
+export CLASSPATH=$HOME/cs512/project2/project1stuff/servercode:$HOME/cs512/project2/project1stuff/servercode/NewExceptions
+javac NewExceptions/*.java
+javac ResImpl/*.java
+javac ResInterface/*.java
+javac LockManager/*.java
+jar cvf ResInterface.jar ResInterface/*.class
+
+
+
+java -Djava.rmi.server.codebase=file:$HOME/comp512/project2/project1stuff/servercode/ -Djava.security.policy=file:$HOME/comp512/project2/project1stuff/servercode/java.policy ResImpl.ResourceManagerImpl Group7FlightRM
+java -Djava.rmi.server.codebase=file:$HOME/comp512/project2/project1stuff/servercode/ -Djava.security.policy=file:$HOME/comp512/project2/project1stuff/servercode/java.policy ResImpl.ResourceManagerImpl Group7RoomRM
+java -Djava.rmi.server.codebase=file:$HOME/comp512/project2/project1stuff/servercode/ -Djava.security.policy=file:$HOME/comp512/project2/project1stuff/servercode/java.policy ResImpl.ResourceManagerImpl Group7CarRM
+
+java -Djava.rmi.server.codebase=file:$HOME/comp512/project2/project1stuff/servercode/ -Djava.security.policy=file:$HOME/comp512/project2/project1stuff/servercode/java.policy ResImpl.Middleware localhost Group7FlightRM Group7RoomRM Group7CarRM
+
+
+export CLASSPATH=$HOME/cs512/project2/project1stuff/clientsrc:$HOME/cs512/project2/project1stuff/clientsrc/ResInterface.jar:$HOME/cs512/project2/project1stuff/servercode/NewExceptions
+
+java client willy
+
+====================================================
+
 java -Djava.rmi.server.codebase=file:$HOME/comp512/servercode/ -Djava.security.policy=file:$HOME/comp512/servercode/java.policy ResImpl.Middleware localhost Group7FlightRM Group7RoomRM Group7CarRM
 
 

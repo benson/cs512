@@ -1,0 +1,5 @@
+grant codeBase "file:$HOME/cs512/project2/project1stuff/servercode" {
+    permission java.security.AllPermission;
+};
+
+
