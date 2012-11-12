@@ -2,7 +2,6 @@ package ResImpl;
 
 import ResInterface.*;
 import LockManager.*;
-import NewExceptions.*;
 
 import java.util.*;
 import java.rmi.*;
@@ -86,18 +85,16 @@ public class Middleware implements ResourceManager
 	
 	// Create a new flight, or add seats to existing flight
 	//  NOTE: if flightPrice <= 0 and the flight already exists, it maintains its current price
-	public boolean addFlight(int id, int flightNum, int flightSeats, int flightPrice) throws TransactionAbortedException,
-    	InvalidTransactionException, RemoteException
+	public boolean addFlight(int id, int flightNum, int flightSeats, int flightPrice) throws RemoteException, NoSuchElementException, MissingResourceException
 	{
 		tm.enlist(id, flightRM);
 		lock(id, Flight.getKey(flightNum), LockManager.WRITE);
-	    return flightRM.addFlight(id, flightNum, flightSeats, flightPrice);
+		return flightRM.addFlight(id, flightNum, flightSeats, flightPrice);
 	}
 
 
 	
-	public boolean deleteFlight(int id, int flightNum) throws TransactionAbortedException,
-    	InvalidTransactionException, RemoteException
+	public boolean deleteFlight(int id, int flightNum) throws RemoteException, NoSuchElementException, MissingResourceException
 	{
 		tm.enlist(id, flightRM);
 		lock(id, Flight.getKey(flightNum), LockManager.WRITE);
@@ -106,8 +103,7 @@ public class Middleware implements ResourceManager
 
 	// Create a new room location or add rooms to an existing location
 	//  NOTE: if price <= 0 and the room location already exists, it maintains its current price
-	public boolean addRooms(int id, String location, int count, int price)  throws TransactionAbortedException,
-    	InvalidTransactionException, RemoteException
+	public boolean addRooms(int id, String location, int count, int price) throws RemoteException, NoSuchElementException, MissingResourceException
 	{
 		tm.enlist(id, roomRM);
 		lock(id, Hotel.getKey(location), LockManager.WRITE);
@@ -115,8 +111,7 @@ public class Middleware implements ResourceManager
 	}
 
 	// Delete rooms from a location
-	public boolean deleteRooms(int id, String location)  throws TransactionAbortedException,
-    	InvalidTransactionException, RemoteException
+	public boolean deleteRooms(int id, String location) throws RemoteException, NoSuchElementException, MissingResourceException
 	{
 		tm.enlist(id, roomRM);
 		lock(id, Hotel.getKey(location), LockManager.WRITE);
@@ -125,8 +120,7 @@ public class Middleware implements ResourceManager
 
 	// Create a new car location or add cars to an existing location
 	//  NOTE: if price <= 0 and the location already exists, it maintains its current price
-	public boolean addCars(int id, String location, int count, int price)  throws TransactionAbortedException,
-    	InvalidTransactionException, RemoteException
+	public boolean addCars(int id, String location, int count, int price) throws RemoteException, NoSuchElementException, MissingResourceException
 	{
 		tm.enlist(id, carRM);
 		lock(id, Car.getKey(location), LockManager.WRITE);
@@ -135,8 +129,7 @@ public class Middleware implements ResourceManager
 
 
 	// Delete cars from a location
-	public boolean deleteCars(int id, String location)  throws TransactionAbortedException,
-    	InvalidTransactionException, RemoteException
+	public boolean deleteCars(int id, String location) throws RemoteException, NoSuchElementException, MissingResourceException
 	{
 		tm.enlist(id, carRM);
 		lock(id, Car.getKey(location), LockManager.WRITE);
@@ -147,8 +140,7 @@ public class Middleware implements ResourceManager
 
 
 	// Returns the number of empty seats on this flight
-	public int queryFlight(int id, int flightNum)  throws TransactionAbortedException,
-    	InvalidTransactionException, RemoteException
+	public int queryFlight(int id, int flightNum)  throws RemoteException, NoSuchElementException, MissingResourceException
 	{
 		tm.enlist(id, flightRM);
 		lock(id, Flight.getKey(flightNum), LockManager.READ);
@@ -171,8 +163,7 @@ public class Middleware implements ResourceManager
 
 
 	// Returns price of this flight
-	public int queryFlightPrice(int id, int flightNum )  throws TransactionAbortedException,
-    	InvalidTransactionException, RemoteException
+	public int queryFlightPrice(int id, int flightNum )  throws RemoteException, NoSuchElementException, MissingResourceException
 	{
 		tm.enlist(id, flightRM);
 		lock(id, Flight.getKey(flightNum), LockManager.READ);
@@ -182,8 +173,7 @@ public class Middleware implements ResourceManager
 
 
 	// Returns the number of rooms available at a location
-	public int queryRooms(int id, String location)  throws TransactionAbortedException,
-    	InvalidTransactionException, RemoteException
+	public int queryRooms(int id, String location)  throws RemoteException, NoSuchElementException, MissingResourceException
 	{
 		tm.enlist(id, roomRM);
 		lock(id, Hotel.getKey(location), LockManager.READ);
@@ -195,8 +185,7 @@ public class Middleware implements ResourceManager
 	
 	
 	// Returns room price at this location
-	public int queryRoomsPrice(int id, String location)  throws TransactionAbortedException,
-    	InvalidTransactionException, RemoteException
+	public int queryRoomsPrice(int id, String location)  throws RemoteException, NoSuchElementException, MissingResourceException
 	{
 		tm.enlist(id, roomRM);
 		lock(id, Hotel.getKey(location), LockManager.READ);
@@ -206,19 +195,16 @@ public class Middleware implements ResourceManager
 
 
 	// Returns the number of cars available at a location
-	public int queryCars(int id, String location)  throws TransactionAbortedException,
-    	InvalidTransactionException, RemoteException
+	public int queryCars(int id, String location) throws RemoteException, NoSuchElementException, MissingResourceException
 	{
 		tm.enlist(id, carRM);
 		lock(id, Car.getKey(location), LockManager.READ);
-	    return carRM.queryCars(id, location);
-		//return queryNum(id, Car.getKey(location));
+		return carRM.queryCars(id, location);
 	}
 
 
 	// Returns price of cars at this location
-	public int queryCarsPrice(int id, String location)  throws TransactionAbortedException,
-    	InvalidTransactionException, RemoteException
+	public int queryCarsPrice(int id, String location) throws RemoteException, NoSuchElementException, MissingResourceException
 	{
 		tm.enlist(id, carRM);
 		lock(id, Car.getKey(location), LockManager.READ);
@@ -228,8 +214,7 @@ public class Middleware implements ResourceManager
 
 	// return a bill
 	
-	public String queryCustomerInfo(int id, int customerID)  throws TransactionAbortedException,
-    	InvalidTransactionException, RemoteException
+	public String queryCustomerInfo(int id, int customerID) throws RemoteException, NoSuchElementException, MissingResourceException
 	{  
         int i;
         String carBill;
@@ -267,8 +252,7 @@ public class Middleware implements ResourceManager
     // customer functions
     // new customer just returns a unique customer identifier
 
-    public int newCustomer(int id) throws TransactionAbortedException,
-    	InvalidTransactionException, RemoteException
+    public int newCustomer(int id) throws RemoteException, NoSuchElementException, MissingResourceException
     {
     	tm.enlist(id, carRM);
         tm.enlist(id, roomRM);
@@ -285,8 +269,7 @@ public class Middleware implements ResourceManager
 
 	// I opted to pass in customerID instead. This makes testing easier
 	
-    public boolean newCustomer(int id, int customerID ) throws TransactionAbortedException,
-    	InvalidTransactionException, RemoteException
+    public boolean newCustomer(int id, int customerID ) throws RemoteException, NoSuchElementException, MissingResourceException
 	{  
 		tm.enlist(id, carRM);
         tm.enlist(id, roomRM);
@@ -300,8 +283,7 @@ public class Middleware implements ResourceManager
 
 
 	// Deletes customer from the database. 
-	public boolean deleteCustomer(int id, int customerID) throws TransactionAbortedException,
-    	InvalidTransactionException, RemoteException
+	public boolean deleteCustomer(int id, int customerID) throws RemoteException, NoSuchElementException, MissingResourceException
 	{   
 		tm.enlist(id, carRM);
         tm.enlist(id, roomRM);
@@ -312,8 +294,7 @@ public class Middleware implements ResourceManager
 
 	
 	// Adds car reservation to this customer. 
-	public boolean reserveCar(int id, int customerID, String location)  throws TransactionAbortedException,
-    	InvalidTransactionException, RemoteException
+	public boolean reserveCar(int id, int customerID, String location)  throws RemoteException, NoSuchElementException, MissingResourceException
 	{
 		tm.enlist(id, carRM);
 		lock(id, Customer.getKey(customerID), LockManager.WRITE);
@@ -324,8 +305,7 @@ public class Middleware implements ResourceManager
 
 
 	// Adds room reservation to this customer. 
-	public boolean reserveRoom(int id, int customerID, String location)  throws TransactionAbortedException,
-    	InvalidTransactionException, RemoteException
+	public boolean reserveRoom(int id, int customerID, String location)  throws RemoteException, NoSuchElementException, MissingResourceException
 	{
 		tm.enlist(id, roomRM);
 		lock(id, Customer.getKey(customerID), LockManager.WRITE);
@@ -334,8 +314,7 @@ public class Middleware implements ResourceManager
 		//return reserveItem(id, customerID, Hotel.getKey(location), location);
 	}
 	// Adds flight reservation to this customer.  
-	public boolean reserveFlight(int id, int customerID, int flightNum)  throws TransactionAbortedException,
-    	InvalidTransactionException, RemoteException
+	public boolean reserveFlight(int id, int customerID, int flightNum) throws RemoteException, NoSuchElementException, MissingResourceException
 	{
 		tm.enlist(id, flightRM);
 		lock(id, Customer.getKey(customerID), LockManager.WRITE);
@@ -345,8 +324,8 @@ public class Middleware implements ResourceManager
 	}
 	
 	/* reserve an itinerary */
-    public boolean itinerary(int id,int customer,Vector flightNumbers,String location,boolean car,boolean room)  throws TransactionAbortedException,
-    	InvalidTransactionException, RemoteException {
+    public boolean itinerary(int id,int customer,Vector flightNumbers,String location,boolean car,boolean room)  throws RemoteException, NoSuchElementException, MissingResourceException
+    {
 	    boolean boolCar = true;
 	    boolean boolRoom = true;
 	    boolean boolFlights = true;
@@ -385,14 +364,13 @@ public class Middleware implements ResourceManager
     	tm.start();
     }
 
-    public boolean commit(int transactionId) throws RemoteException, TransactionAbortedException,
-    	InvalidTransactionException
+    public boolean commit(int transactionId) throws RemoteException, NoSuchElementException, MissingResourceException
     {
     	lm.UnlockAll(transactionId);
     	return tm.commit(transactionId);
     }
 
-    public void abort(int transactionId) throws RemoteException, InvalidTransactionException
+    public void abort(int transactionId) throws RemoteException, NoSuchElementException
     {
     	lm.UnlockAll(transactionId);
     	tm.abort(transactionId);
@@ -400,10 +378,11 @@ public class Middleware implements ResourceManager
 
     public boolean shutdown() throws RemoteException
     {
+    	tm.shutdown();
     	return (carRM.shutdown() && flightRM.shutdown() && roomRM.shutdown());
     }
 
-    private void lock(int id, String key, int type)
+    private void lock(int id, String key, int type) throws NoSuchElementException, MissingResourceException
     {
     	try
     	{
@@ -413,12 +392,14 @@ public class Middleware implements ResourceManager
     	{
     		try
     		{
-    			abort(id);
-    		}
-    		catch (Exception re)
-    		{
-    			return;
-    		}
+  				abort(id);
+  			}
+  			catch(Exception e)
+  			{
+
+  			}
+  			throw new MissingResourceException("Aborting transaction " + id + " for deadlock", "ABORT",
+  				new Integer(id).toString());
     	}
     }
 }

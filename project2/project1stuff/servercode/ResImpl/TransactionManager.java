@@ -21,9 +21,14 @@ class TransactionManager
 		this.ht = new Hashtable<Integer, LocalTransaction>();
 	}
 
-	private LocalTransaction get(int id)
+	private LocalTransaction get(int id) throws NoSuchElementException
 	{
-		return ht.get(new Integer(id));
+		LocalTransaction t = ht.get(new Integer(id));
+		if (t == null)
+		{
+			throw new NoSuchElementException();
+		}
+		return t;
 	}
 
 	public int start(int id)
@@ -32,21 +37,28 @@ class TransactionManager
 		return id;
 	}
 
-	public void remove(int id)
+	public void remove(int id) throws NoSuchElementException
 	{
 		ht.remove(new Integer(id));
 	}
 
-	public void addWriteOperation(int id, String objectS, RMItem previous)
+	public void addWriteOperation(int id, String objectS, RMItem previous) throws NoSuchElementException
 	{
 		LocalTransaction t = get(id);
 		if(!t.hasHistory(objectS))
 		{
-			t.addToHistory(objectS, previous);
+			if (previous == null)
+			{
+				t.addToHistory(objectS, new Nothing());
+			}
+			else
+			{
+				t.addToHistory(objectS, previous);
+			}
 		}
 	}
 
-	public Hashtable<String, RMItem> getHistory(int id)
+	public Hashtable<String, RMItem> getHistory(int id) throws NoSuchElementException
 	{
 		return get(id).getHistory();
 	}

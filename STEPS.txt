@@ -10,8 +10,7 @@ NEW STUFF FOR PROJECT 2 ========================================================
 
 ssh willy
 cd cs512/project2/project1stuff/servercode
-export CLASSPATH=$HOME/cs512/project2/project1stuff/servercode:$HOME/cs512/project2/project1stuff/servercode/NewExceptions
-javac NewExceptions/*.java
+export CLASSPATH=$HOME/cs512/project2/project1stuff/servercode
 javac ResImpl/*.java
 javac ResInterface/*.java
 javac LockManager/*.java
@@ -26,9 +25,24 @@ java -Djava.rmi.server.codebase=file:$HOME/comp512/project2/project1stuff/server
 java -Djava.rmi.server.codebase=file:$HOME/comp512/project2/project1stuff/servercode/ -Djava.security.policy=file:$HOME/comp512/project2/project1stuff/servercode/java.policy ResImpl.Middleware localhost Group7FlightRM Group7RoomRM Group7CarRM
 
 
-export CLASSPATH=$HOME/cs512/project2/project1stuff/clientsrc:$HOME/cs512/project2/project1stuff/clientsrc/ResInterface.jar:$HOME/cs512/project2/project1stuff/servercode/NewExceptions
+export CLASSPATH=$HOME/cs512/project2/project1stuff/clientsrc:$HOME/cs512/project2/project1stuff/clientsrc/ResInterface.jar
 
 java client willy
+
+
+start
+newcar,0,1,1,1
+newcustomer,0,1
+commit,0
+start
+reservecar,1,1,1
+start
+querycar,2,1
+
+
+TRANSACTION ABORTED EXCEPTION == MISSING RESOURCE EXCEPTION
+
+INVALID TRANSACTION EXCEPTION == NO SUCH ELEMENT EXCEPTION
 
 ====================================================
 
