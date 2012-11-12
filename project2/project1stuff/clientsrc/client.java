@@ -85,8 +85,14 @@ public class client
 			    System.exit(1);
 			}
 			//remove heading and trailing white space
+			if (command == null)
+			{
+				break;
+			}
 			command=command.trim();
 			arguments=obj.parse(command);
+			if(arguments.size() == 0)
+				continue;
 			
 
 			// WE DID THIS

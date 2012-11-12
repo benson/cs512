@@ -64,40 +64,45 @@ class TMDispatcher
 	{
 		for (Enumeration e = table.keys(); e.hasMoreElements();)
 		{
-			abort((Integer) e);
+			abort((Integer) e.nextElement());
 		}
 		to.interrupt();
-		to.join();
+		try
+		{
+			to.join();
+		}
+		catch(InterruptedException e)
+		{
+		}
 	}
 
 	public void decrementTime()
 	{
-		Integer key;
-		for (Enumeration e = table.keys(); e.hasMoreElements();)
+		synchronized(table)
 		{
-			key = (Integer)e.nextElement();
-			if (table.get(key).decrementTime() == 0)
+			Integer key;
+			for (Enumeration e = table.keys(); e.hasMoreElements();)
 			{
-				System.out.println("Transaction " + key + " just timed out.");
-				abort(key.intValue());
+				key = (Integer)e.nextElement();
+				if (table.get(key).decrementTime() == 0)
+				{
+					System.out.println("Transaction " + key + " just timed out.");
+					abort(key.intValue());
+				}
 			}
 		}
 	}
 
 	public void abort(int id) throws NoSuchElementException
 	{
-		Transaction t;
-		// try
-		// {
-		t = get(id);
-		t.abort();
-		aborted.add(id);
-		table.remove(new Integer(id));
-		// }
-		// catch (TransactionAbortedException e)
-		// {
-		// 	return;
-		// }
+		synchronized(table)
+		{
+			Transaction t;
+			t = get(id);
+			t.abort();
+			aborted.add(id);
+			table.remove(new Integer(id));
+		}
 	}
 
 	// CALL THIS SHIT WHENEVER YOU DISPATCH A READ OR WRITE MOTHERFUCKER
