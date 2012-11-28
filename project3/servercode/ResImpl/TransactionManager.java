@@ -33,6 +33,7 @@ class TransactionManager
 
 	public int start(int id)
 	{
+        if (ht.containsKey(new Integer(id))) return id;
 		ht.put(new Integer(id), new LocalTransaction(id));
 		return id;
 	}
