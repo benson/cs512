@@ -534,4 +534,9 @@ public class ResourceManagerImpl
    		System.exit(1);
    		return true;
    	}
+
+   	public void wakeUp()
+   	{
+   		return;
+   	}
 }

@@ -14,7 +14,7 @@ class TMDispatcher
 	private Vector<Integer> aborted;
 	private int newId = 0;
 	private Timeouter to;
-    boolean awake;
+    private boolean awake;
 
 	public TMDispatcher() {
 		table = new Hashtable<Integer, Transaction>();

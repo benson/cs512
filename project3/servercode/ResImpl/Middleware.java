@@ -20,13 +20,12 @@ public class Middleware implements ResourceManager
     static LockManager lm;
     static String name = "Group7ResourceManager";
 
-    private void primary()
+    private void wakeUp()
     {
         flightRM.wakeUp();
         roomRM.wakeUp();
         carRM.wakeUp();
         tm.wakeUp();
-        secondary = LocateRegistry.getRegistry(2468).lookup("Group7SecondaryMiddleware");
     }
 
     public static void main(String args[])

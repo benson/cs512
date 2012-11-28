@@ -1,10 +1,22 @@
+package ResImpl;
+
+import ResInterface.*;
+
+import java.util.*;
+import java.rmi.*;
+
+import java.rmi.registry.Registry;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+
 public class MPackaging implements ResourceManager
 {
     private int number;
     private ResourceManager[] mwares;
     private boolean[] alive;
 
-    public MPackaging(Registry registry, String base; int number)
+    public MPackaging(Registry registry, String base, int number)
     {
         this.number = number;
         this.mwares = new ResourceManager[number];
@@ -97,7 +109,7 @@ public class MPackaging implements ResourceManager
                     if (!hasValue) {
                         mwares[i].wakeUp();
                     }
-                    result = mwares[i].addRooms(id, location, numRooms, price) 
+                    result = mwares[i].addRooms(id, location, numRooms, price);
                     hasValue = true;
                 } catch (Exception e) {
                     alive[i] = false;
@@ -687,5 +699,10 @@ public class MPackaging implements ResourceManager
             throw new RemoteException();
         }
 
+    }
+
+    public void wakeUp()
+    {
+        return;
     }
 }
