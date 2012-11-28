@@ -31,8 +31,10 @@ class TMDispatcher
 
 	public int start()
 	{
+		System.out.println("Inside TMDispatcher start method");
 		int id = newId++;
 		table.put(new Integer(id), new Transaction(this, id));
+		System.out.println("In TMDispatcher start method, after putting in the table");
 		return id;
 	}
 
@@ -129,7 +131,7 @@ class TMDispatcher
 
 class Transaction
 {
-	private static int maxTime = 30;
+	private static int maxTime = 300;
 	private int id;
 	private Vector<ResourceManager> enlisted;
 	private int timeToLive;
@@ -155,13 +157,18 @@ class Transaction
 
 	public void enlist(ResourceManager rm)
 	{
+		System.out.println("In enlist");
 		resetTime();
 		if (!enlisted.contains(rm))
 		{
+			System.out.println("Inside if");
 			enlisted.add(rm);
+			System.out.println("After adding rm");
 			try
 			{
+				System.out.println("Inside try, before calling start");
 				if (disp.isAwake()) rm.start(id);
+				System.out.println("After (possibly) calling start");
 			}
 			catch (Exception e)
 			{

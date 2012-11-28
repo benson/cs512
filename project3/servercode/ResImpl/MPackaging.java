@@ -1,9 +1,8 @@
 package ResImpl;
 
-import ResInterface.*;
-
 import java.util.*;
 import java.rmi.*;
+import ResInterface.*;
 
 import java.rmi.registry.Registry;
 import java.rmi.registry.LocateRegistry;
@@ -75,13 +74,20 @@ public class MPackaging implements ResourceManager
         boolean hasValue = false;
         boolean result = false;
         for (int i = 0; i < number; i++) {
+            System.out.println("Above alive, i = " + i);
             if (alive[i]) {
+                System.out.println("Something is alive");
                 try {
+                    System.out.println("Trying");
                     if (!hasValue) {
+                        System.out.println("Waking up");
                         mwares[i].wakeUp();
+                        System.out.println("Woke up mwares[ " + i + "]");
+                        result = mwares[i].addCars(id, location, numCars, price);
+                        System.out.println("After setting result");
+                        hasValue = true;
                     }
-                    result = mwares[i].addCars(id, location, numCars, price);
-                    hasValue = true;
+                    System.out.println("After setting hasvalue");
                 } catch (Exception e) {
                     alive[i] = false;
                 }

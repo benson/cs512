@@ -1,9 +1,9 @@
 package ResImpl;
 
-import ResInterface.*;
-
 import java.util.*;
 import java.rmi.*;
+
+import ResInterface.*;
 
 import java.rmi.registry.Registry;
 import java.rmi.registry.LocateRegistry;
@@ -36,8 +36,11 @@ public class Packaging implements ResourceManager
             try {
                 servers[i] = (ResourceManager) registry.lookup(base + new Integer(i).toString());
                 live[i] = true;
+                System.out.println("in packaging init, " + i + " is live");
                 atLeastOne = true;
             } catch (Exception e) {
+                System.out.println("caught exception e, " + i + " set to dead");
+                System.out.println(e);
                 live[i] = false;
             }
         }
@@ -78,15 +81,22 @@ public class Packaging implements ResourceManager
     public boolean addCars(int id, String location, int numCars, int price) 
     throws RemoteException, NoSuchElementException, MissingResourceException
     {
+        System.out.println("In packaging addcars");
         if (!awake) return true;
 
         boolean ret = false;
         boolean sent = false;
+        boolean temp;
         int first = 0;
         for (int i = 0; i < managers; i++) {
+            System.out.println("In packaging for loop, i = " + i);
             if (live[i]) {
+                System.out.println("i is live");
                 try {
-                    ret = ret || servers[i].addCars(id, location, numCars, price);
+                    System.out.println("inside try");
+                    temp = servers[i].addCars(id, location, numCars, price);
+                    ret = ret || temp;
+                    System.out.println("after setting ret");
                     sent = true;
                 } catch (RemoteException e) {
                     live[i] = false;
@@ -550,14 +560,18 @@ public class Packaging implements ResourceManager
     public void start(int id) throws RemoteException
     {
         if (!awake) return;
-
+        System.out.println("In Packaging.start(int)");
         //WRITE
         // basic loop
         boolean sent = false;
         for (int i = 0; i < managers; i++) {
             if (live[i]) {
+                System.out.println(i + " is live");
                 try {
+                    System.out.println("Inside try, about to call servers[" + i + "].start(" + id + ")");
+                    System.out.println("servers[i] = " + servers[i]);
                     servers[i].start(id);
+                    System.out.println("After calling start, didn't throw an error");
                     sent = true;
                 } catch (RemoteException e) {
                     live[i] = false;

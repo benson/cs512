@@ -2,12 +2,13 @@
 // adapated from Kevin T. Manley
 // CSE 593
 //
-package ResImpl;
 
-import ResInterface.*;
+package ResImpl;
 
 import java.util.*;
 import java.rmi.*;
+
+import ResInterface.*;
 
 import java.rmi.registry.Registry;
 import java.rmi.registry.LocateRegistry;
@@ -26,18 +27,14 @@ public class ResourceManagerImpl
         // Figure out where server is running
         String server = "localhost";
         name = "Group7ResourceManager"; 
-         if (args.length == 2) 
+         if (args.length == 1) 
          {
-             server = server + ":" + args[0];
-             name = args[1];
+             name = args[0];
          }
-         else if (args.length == 1)
+         else
          {
-            name = args[0];
-         } 
-         else if (args.length != 2) {
              System.err.println ("Wrong usage");
-             System.out.println("Usage: java ResImpl.ResourceManagerImpl [port] [name]");
+             System.out.println("Usage: java ResImpl.ResourceManagerImpl [name]");
              System.exit(1);
          }
 	 
@@ -50,7 +47,7 @@ public class ResourceManagerImpl
 		 tm = new TransactionManager();
 		 
 		 // Bind the remote object's stub in the registry
-		 Registry registry = LocateRegistry.getRegistry(2468);
+		 Registry registry = LocateRegistry.getRegistry(3579);
 		 registry.rebind(name, rm);
 		 
 		 System.err.println("Server ready");
@@ -486,7 +483,9 @@ public class ResourceManagerImpl
 
     public void start(int id) throws RemoteException
     {
+    	System.out.println("In RM start method, before calling start on the TM");
     	tm.start(id);
+    	System.out.println("In RM start method, AFTER calling start on the TM");
     }
 
     public int start() throws RemoteException

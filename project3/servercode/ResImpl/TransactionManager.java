@@ -2,7 +2,6 @@ package ResImpl;
 
 import java.util.Hashtable;
 import ResInterface.*;
-
 import java.util.*;
 import java.rmi.*;
 

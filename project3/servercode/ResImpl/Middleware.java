@@ -19,9 +19,12 @@ public class Middleware implements ResourceManager
     static TMDispatcher tm;
     static LockManager lm;
     static String name = "Group7ResourceManager";
+    static boolean awake = false;
 
     public void wakeUp() throws RemoteException
     {
+    	if (awake) return;
+    	awake = true;
         flightRM.wakeUp();
         roomRM.wakeUp();
         carRM.wakeUp();
@@ -46,7 +49,8 @@ public class Middleware implements ResourceManager
 
 
             // Bind the remote object's stub in the registry
-            Registry registry = LocateRegistry.getRegistry(2468);
+            Registry registry = LocateRegistry.getRegistry(3579);
+            name = name + args[1];
             registry.rebind(name, rm);
 
             System.err.println("Server ready");
@@ -59,16 +63,16 @@ public class Middleware implements ResourceManager
         
         
         /*  CLIENT */
-		if (args.length >= 1)
+		if (args.length == 2)
 		{
 		    String server = args[0];
 		    try
 		    {
-		        Registry registry = LocateRegistry.getRegistry(server, 2468);
+		        Registry registry = LocateRegistry.getRegistry(server, 3579);
 		        // get the proxy and the remote reference by rmiregistry lookup
-		        flightRM = (ResourceManager) registry.lookup(args[1]);
-		        roomRM = (ResourceManager) registry.lookup(args[2]);
-		        carRM = (ResourceManager) registry.lookup(args[3]);
+		        flightRM = (ResourceManager) new Packaging(registry, "Group7FlightRM", 2);
+		        roomRM = (ResourceManager) new Packaging(registry, "Group7RoomRM", 2);
+		        carRM = (ResourceManager) new Packaging(registry, "Group7CarRM", 2);
 		        if(carRM!=null && flightRM!=null && roomRM!=null)
 			    {
 			        System.out.println("Successful");
@@ -87,7 +91,7 @@ public class Middleware implements ResourceManager
 		}
 		else
 		{
-		    System.out.println ("Usage: java client rmihost RM1 RM2 RM3 (none are optional)"); 
+		    System.out.println ("Usage: java client server middleware-number"); 
 			System.exit(1); 
 		}
 	}	 
@@ -131,8 +135,11 @@ public class Middleware implements ResourceManager
 	//  NOTE: if price <= 0 and the location already exists, it maintains its current price
 	public boolean addCars(int id, String location, int count, int price) throws RemoteException, NoSuchElementException, MissingResourceException
 	{
+		System.out.println("In addcars");
 		tm.enlist(id, carRM);
+		System.out.println("After enlisting");
 		lock(id, Car.getKey(location), LockManager.WRITE);
+		System.out.println("After locking");
 	    return carRM.addCars(id, location, count, price);
 	}
 
