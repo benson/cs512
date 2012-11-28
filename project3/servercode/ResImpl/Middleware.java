@@ -20,7 +20,7 @@ public class Middleware implements ResourceManager
     static LockManager lm;
     static String name = "Group7ResourceManager";
 
-    private void wakeUp()
+    public void wakeUp() throws RemoteException
     {
         flightRM.wakeUp();
         roomRM.wakeUp();
@@ -62,7 +62,6 @@ public class Middleware implements ResourceManager
 		if (args.length >= 1)
 		{
 		    String server = args[0];
-            if (args.length > 1) primary();
 		    try
 		    {
 		        Registry registry = LocateRegistry.getRegistry(server, 2468);
@@ -157,19 +156,6 @@ public class Middleware implements ResourceManager
 	    return flightRM.queryFlight(id, flightNum);
 		//return queryNum(id, Flight.getKey(flightNum));
 	}
-
-	// Returns the number of reservations for this flight. 
-//	public int queryFlightReservations(int id, int flightNum)
-//		throws RemoteException
-//	{
-//		Trace.info("RM::queryFlightReservations(" + id + ", #" + flightNum + ") called" );
-//		RMInteger numReservations = (RMInteger) readData( id, Flight.getNumReservationsKey(flightNum) );
-//		if( numReservations == null ) {
-//			numReservations = new RMInteger(0);
-//		} // if
-//		Trace.info("RM::queryFlightReservations(" + id + ", #" + flightNum + ") returns " + numReservations );
-//		return numReservations.getValue();
-//	}
 
 
 	// Returns price of this flight

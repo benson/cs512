@@ -24,7 +24,7 @@ public class MPackaging implements ResourceManager
 
         for (int i = 0; i < number; i++) {
             try {
-                mwares[i] = registry.lookup(base + new Integer(i).toString());
+                mwares[i] = (ResourceManager) registry.lookup(base + new Integer(i).toString());
                 alive[i] = true;
             } catch (Exception e) {
                 alive[i] = false;
@@ -43,7 +43,7 @@ public class MPackaging implements ResourceManager
 	throws RemoteException, NoSuchElementException, MissingResourceException
     {
         boolean hasValue = false;
-        boolean result;
+        boolean result = false;
         for (int i = 0; i < number; i++) {
             if (alive[i]) {
                 try {
@@ -73,7 +73,7 @@ public class MPackaging implements ResourceManager
 	throws RemoteException, NoSuchElementException, MissingResourceException
     {
         boolean hasValue = false;
-        boolean result;
+        boolean result = false;
         for (int i = 0; i < number; i++) {
             if (alive[i]) {
                 try {
@@ -102,7 +102,7 @@ public class MPackaging implements ResourceManager
     throws RemoteException, NoSuchElementException, MissingResourceException
     {
         boolean hasValue = false;
-        boolean result;
+        boolean result = false;
         for (int i = 0; i < number; i++) {
             if (alive[i]) {
                 try {
@@ -128,7 +128,7 @@ public class MPackaging implements ResourceManager
     throws RemoteException, NoSuchElementException, MissingResourceException
     {
         boolean hasValue = false;
-        int result;
+        int result = -1;
         for (int i = 0; i < number; i++) {
             if (alive[i]) {
                 try {
@@ -154,7 +154,7 @@ public class MPackaging implements ResourceManager
     throws RemoteException, NoSuchElementException, MissingResourceException
     {
         boolean hasValue = false;
-        boolean result;
+        boolean result = false;
         for (int i = 0; i < number; i++) {
             if (alive[i]) {
                 try {
@@ -187,7 +187,7 @@ public class MPackaging implements ResourceManager
     throws RemoteException, NoSuchElementException, MissingResourceException  
     {
         boolean hasValue = false;
-        boolean result;
+        boolean result = false;
         for (int i = 0; i < number; i++) {
             if (alive[i]) {
                 try {
@@ -217,7 +217,7 @@ public class MPackaging implements ResourceManager
     throws RemoteException, NoSuchElementException, MissingResourceException
     {
         boolean hasValue = false;
-        boolean result;
+        boolean result = false;
         for (int i = 0; i < number; i++) {
             if (alive[i]) {
                 try {
@@ -247,7 +247,7 @@ public class MPackaging implements ResourceManager
     throws RemoteException, NoSuchElementException, MissingResourceException
     {
         boolean hasValue = false;
-        boolean result;
+        boolean result = false;
         for (int i = 0; i < number; i++) {
             if (alive[i]) {
                 try {
@@ -273,7 +273,7 @@ public class MPackaging implements ResourceManager
     throws RemoteException, NoSuchElementException, MissingResourceException
     {
         boolean hasValue = false;
-        boolean result;
+        boolean result = false;
         for (int i = 0; i < number; i++) {
             if (alive[i]) {
                 try {
@@ -299,7 +299,7 @@ public class MPackaging implements ResourceManager
     throws RemoteException, NoSuchElementException, MissingResourceException
     {
         boolean hasValue = false;
-        int result;
+        int result = -1;
         for (int i = 0; i < number; i++) {
             if (alive[i]) {
                 try {
@@ -325,7 +325,7 @@ public class MPackaging implements ResourceManager
     throws RemoteException, NoSuchElementException, MissingResourceException
     {
         boolean hasValue = false;
-        int result;
+        int result = -1;
         for (int i = 0; i < number; i++) {
             if (alive[i]) {
                 try {
@@ -351,7 +351,7 @@ public class MPackaging implements ResourceManager
     throws RemoteException, NoSuchElementException, MissingResourceException
     {
         boolean hasValue = false;
-        int result;
+        int result = -1;
         for (int i = 0; i < number; i++) {
             if (alive[i]) {
                 try {
@@ -377,7 +377,7 @@ public class MPackaging implements ResourceManager
     throws RemoteException, NoSuchElementException, MissingResourceException 
     {
         boolean hasValue = false;
-        String result;
+        String result = "";
         for (int i = 0; i < number; i++) {
             if (alive[i]) {
                 try {
@@ -403,7 +403,7 @@ public class MPackaging implements ResourceManager
     throws RemoteException, NoSuchElementException, MissingResourceException
     {
         boolean hasValue = false;
-        int result;
+        int result = -1;
         for (int i = 0; i < number; i++) {
             if (alive[i]) {
                 try {
@@ -429,7 +429,7 @@ public class MPackaging implements ResourceManager
     throws RemoteException, NoSuchElementException, MissingResourceException
     {
         boolean hasValue = false;
-        int result;
+        int result = -1;
         for (int i = 0; i < number; i++) {
             if (alive[i]) {
                 try {
@@ -455,7 +455,7 @@ public class MPackaging implements ResourceManager
     throws RemoteException, NoSuchElementException, MissingResourceException
     {
         boolean hasValue = false;
-        int result;
+        int result = -1;
         for (int i = 0; i < number; i++) {
             if (alive[i]) {
                 try {
@@ -481,7 +481,7 @@ public class MPackaging implements ResourceManager
     throws RemoteException, NoSuchElementException, MissingResourceException
     {
         boolean hasValue = false;
-        boolean result;
+        boolean result = false;
         for (int i = 0; i < number; i++) {
             if (alive[i]) {
                 try {
@@ -507,7 +507,7 @@ public class MPackaging implements ResourceManager
     throws RemoteException, NoSuchElementException, MissingResourceException
     {
         boolean hasValue = false;
-        boolean result;
+        boolean result = false;
         for (int i = 0; i < number; i++) {
             if (alive[i]) {
                 try {
@@ -533,7 +533,7 @@ public class MPackaging implements ResourceManager
     throws RemoteException, NoSuchElementException, MissingResourceException
     {
         boolean hasValue = false;
-        boolean result;
+        boolean result = false;
         for (int i = 0; i < number; i++) {
             if (alive[i]) {
                 try {
@@ -560,7 +560,7 @@ public class MPackaging implements ResourceManager
     throws RemoteException, NoSuchElementException, MissingResourceException
     {
         boolean hasValue = false;
-        boolean result;
+        boolean result = false;
         for (int i = 0; i < number; i++) {
             if (alive[i]) {
                 try {
@@ -585,7 +585,7 @@ public class MPackaging implements ResourceManager
     public int start() throws RemoteException
     {
         boolean hasValue = false;
-        int result;
+        int result = -1;
         for (int i = 0; i < number; i++) {
             if (alive[i]) {
                 try {
@@ -632,7 +632,7 @@ public class MPackaging implements ResourceManager
     public boolean commit(int id) throws RemoteException, NoSuchElementException, MissingResourceException
     {
         boolean hasValue = false;
-        boolean result;
+        boolean result = false;
         for (int i = 0; i < number; i++) {
             if (alive[i]) {
                 try {
@@ -679,7 +679,7 @@ public class MPackaging implements ResourceManager
     public boolean shutdown() throws RemoteException
     {
         boolean hasValue = false;
-        boolean result;
+        boolean result = false;
         for (int i = 0; i < number; i++) {
             if (alive[i]) {
                 try {

@@ -50,12 +50,15 @@ public class Packaging implements ResourceManager
     public boolean addFlight(int id, int flightNum, int flightSeats, int flightPrice) 
     throws RemoteException, NoSuchElementException, MissingResourceException
     {
+        if (!awake) return true;
+
+        boolean ret = false;
         boolean sent = false;
         int first = 0;
         for (int i = 0; i < managers; i++) {
             if (live[i]) {
                 try {
-                    servers[i].addFlight(id, flightNum, flightSeats, flightPrice);
+                    ret = ret || servers[i].addFlight(id, flightNum, flightSeats, flightPrice);
                     sent = true;
                 } catch (RemoteException e) {
                     live[i] = false;
@@ -65,8 +68,7 @@ public class Packaging implements ResourceManager
         if (!sent) {
             throw new RemoteException();
         }
-        return true;
-
+        return ret;
     }
     
     /* Add cars to a location.  
@@ -76,12 +78,15 @@ public class Packaging implements ResourceManager
     public boolean addCars(int id, String location, int numCars, int price) 
     throws RemoteException, NoSuchElementException, MissingResourceException
     {
+        if (!awake) return true;
+
+        boolean ret = false;
         boolean sent = false;
         int first = 0;
         for (int i = 0; i < managers; i++) {
             if (live[i]) {
                 try {
-                    servers[i].addCars(id, location, numCars, price);
+                    ret = ret || servers[i].addCars(id, location, numCars, price);
                     sent = true;
                 } catch (RemoteException e) {
                     live[i] = false;
@@ -91,7 +96,7 @@ public class Packaging implements ResourceManager
         if (!sent) {
             throw new RemoteException();
         }
-        return true;
+        return ret;
     }
    
     /* Add rooms to a location.  
@@ -101,12 +106,15 @@ public class Packaging implements ResourceManager
     public boolean addRooms(int id, String location, int numRooms, int price) 
     throws RemoteException, NoSuchElementException, MissingResourceException
     {
+        if (!awake) return true;
+
+        boolean ret = false;
         boolean sent = false;
         int first = 0;
         for (int i = 0; i < managers; i++) {
             if (live[i]) {
                 try {
-                    servers[i].addRooms(id, location, numRooms, price);
+                    ret = ret || servers[i].addRooms(id, location, numRooms, price);
                     sent = true;
                 } catch (RemoteException e) {
                     live[i] = false;
@@ -116,7 +124,7 @@ public class Packaging implements ResourceManager
         if (!sent) {
             throw new RemoteException();
         }
-        return true;
+        return ret;
 
     }
                 
@@ -124,16 +132,16 @@ public class Packaging implements ResourceManager
     public int newCustomer(int id) 
     throws RemoteException, NoSuchElementException, MissingResourceException
     {
-        if (!awake) return true;
+        int ret = 0;
 
         //WRITE
         // basic loop
         boolean sent = false;
-        int first = 0;
+        int first = -1;
         for (int i = 0; i < managers; i++) {
             if (live[i]) {
                 try {
-                    if(first == 0)
+                    if(first < 0)
                         first = servers[i].newCustomer(id);
                     else
                         servers[i].newCustomer(id, first);
@@ -146,22 +154,23 @@ public class Packaging implements ResourceManager
         if (!sent) {
             throw new RemoteException();
         }
-        return 1;
+        return first;
+    }
 
-    }  
     /* new customer with providing id */
     public boolean newCustomer(int id, int cid)
-    throws RemoteException, NoSuchElementException, MissingResourceException
+        throws RemoteException, NoSuchElementException, MissingResourceException
     {
         if (!awake) return true;
 
+        boolean ret = false;
         //WRITE
         // basic loop
         boolean sent = false;
         for (int i = 0; i < managers; i++) {
             if (live[i]) {
                 try {
-                    servers[i].newCustomer(id, cid);
+                    ret = ret || servers[i].newCustomer(id, cid);
                     sent = true;
                 } catch (RemoteException e) {
                     live[i] = false;
@@ -171,10 +180,9 @@ public class Packaging implements ResourceManager
         if (!sent) {
             throw new RemoteException();
         }
-        return true;
-
-
+        return ret;
     }
+
     /**
      *   Delete the entire flight.
      *   deleteflight implies whole deletion of the flight.  
@@ -186,6 +194,7 @@ public class Packaging implements ResourceManager
     public boolean deleteFlight(int id, int flightNum) 
     throws RemoteException, NoSuchElementException, MissingResourceException
     {
+        boolean ret = false;
         if (!awake) return true;
 
         //WRITE
@@ -194,7 +203,7 @@ public class Packaging implements ResourceManager
         for (int i = 0; i < managers; i++) {
             if (live[i]) {
                 try {
-                    servers[i].deleteFlight(id, flightNum);
+                    ret = ret || servers[i].deleteFlight(id, flightNum);
                     sent = true;
                 } catch (RemoteException e) {
                     live[i] = false;
@@ -204,14 +213,14 @@ public class Packaging implements ResourceManager
         if (!sent) {
             throw new RemoteException();
         }
-        return true;
-
+        return ret;
     }   
 
     public boolean deleteCars(int id, String location)
         throws RemoteException, NoSuchElementException, MissingResourceException
     {
         if (!awake) return true;
+        boolean ret = false;
 
         //WRITE
         // basic loop
@@ -219,7 +228,7 @@ public class Packaging implements ResourceManager
         for (int i = 0; i < managers; i++) {
             if (live[i]) {
                 try {
-                    servers[i].deleteCars(id, location);
+                    ret = ret || servers[i].deleteCars(id, location);
                     sent = true;
                 } catch (RemoteException e) {
                     live[i] = false;
@@ -229,13 +238,14 @@ public class Packaging implements ResourceManager
         if (!sent) {
             throw new RemoteException();
         }
-        return true;
+        return ret;
     }
 
     public boolean deleteRooms(int id, String location)
         throws RemoteException, NoSuchElementException, MissingResourceException
     {
         if (!awake) return true;
+        boolean ret = false;
 
         //WRITE
         // basic loop
@@ -243,7 +253,7 @@ public class Packaging implements ResourceManager
         for (int i = 0; i < managers; i++) {
             if (live[i]) {
                 try {
-                    servers[i].deleteRooms(id, location);
+                    ret = ret || servers[i].deleteRooms(id, location);
                     sent = true;
                 } catch (RemoteException e) {
                     live[i] = false;
@@ -253,13 +263,14 @@ public class Packaging implements ResourceManager
         if (!sent) {
             throw new RemoteException();
         }
-        return true;
+        return ret;
     }
 
     public boolean deleteCustomer(int id,int customer)
         throws RemoteException, NoSuchElementException, MissingResourceException
     {
         if (!awake) return true;
+        boolean ret = false;
 
         //WRITE
         // basic loop
@@ -267,7 +278,7 @@ public class Packaging implements ResourceManager
         for (int i = 0; i < managers; i++) {
             if (live[i]) {
                 try {
-                    servers[i].deleteCustomer(id, customer);
+                    ret = ret || servers[i].deleteCustomer(id, customer);
                     sent = true;
                 } catch (RemoteException e) {
                     live[i] = false;
@@ -277,6 +288,7 @@ public class Packaging implements ResourceManager
         if (!sent) {
             throw new RemoteException();
         }
+        return ret;
     }
 
     public int queryFlight(int id, int flightNumber)
@@ -416,6 +428,7 @@ public class Packaging implements ResourceManager
         throws RemoteException, NoSuchElementException, MissingResourceException
     {
         if (!awake) return true;
+        boolean ret = false;
 
         //WRITE
         // basic loop
@@ -423,7 +436,7 @@ public class Packaging implements ResourceManager
         for (int i = 0; i < managers; i++) {
             if (live[i]) {
                 try {
-                    servers[i].reserveFlight(id, customer, flightNumber);
+                    ret = ret || servers[i].reserveFlight(id, customer, flightNumber);
                     sent = true;
                 } catch (RemoteException e) {
                     live[i] = false;
@@ -433,12 +446,14 @@ public class Packaging implements ResourceManager
         if (!sent) {
             throw new RemoteException();
         }
+        return ret;
     }
 
     public boolean reserveCar(int id, int customer, String location)
         throws RemoteException, NoSuchElementException, MissingResourceException
     {
         if (!awake) return true;
+        boolean ret = false;
 
         //WRITE
         // basic loop
@@ -446,7 +461,7 @@ public class Packaging implements ResourceManager
         for (int i = 0; i < managers; i++) {
             if (live[i]) {
                 try {
-                    servers[i].reserveCar(id, customer, location);
+                    ret = ret || servers[i].reserveCar(id, customer, location);
                     sent = true;
                 } catch (RemoteException e) {
                     live[i] = false;
@@ -456,6 +471,8 @@ public class Packaging implements ResourceManager
         if (!sent) {
             throw new RemoteException();
         }
+
+        return ret;
     }
 
     public boolean reserveRoom(int id, int customer, String location)
@@ -479,12 +496,14 @@ public class Packaging implements ResourceManager
         if (!sent) {
             throw new RemoteException();
         }
+        return sent;
     }
 
     public boolean itinerary(int id,int customer,Vector flightNumbers,String location, boolean Car, boolean Room)
         throws RemoteException, NoSuchElementException, MissingResourceException
     {
         if (!awake) return true;
+        boolean ret = false;
 
         //WRITE
         // basic loop
@@ -492,7 +511,7 @@ public class Packaging implements ResourceManager
         for (int i = 0; i < managers; i++) {
             if (live[i]) {
                 try {
-                    servers[i].itinerary(id, customer, flightNumbers, location, Car, Room);
+                    ret = ret || servers[i].itinerary(id, customer, flightNumbers, location, Car, Room);
                     sent = true;
                 } catch (RemoteException e) {
                     live[i] = false;
@@ -502,11 +521,13 @@ public class Packaging implements ResourceManager
         if (!sent) {
             throw new RemoteException();
         }
+        return ret;
     }
 
     public int start() throws RemoteException
     {
         if (!awake) return 0;
+        int ret = 0;
 
         //WRITE
         // basic loop
@@ -514,7 +535,7 @@ public class Packaging implements ResourceManager
         for (int i = 0; i < managers; i++) {
             if (live[i]) {
                 try {
-                    servers[i].start();
+                    ret = servers[i].start();
                     sent = true;
                 } catch (RemoteException e) {
                     live[i] = false;
@@ -524,6 +545,7 @@ public class Packaging implements ResourceManager
         if (!sent) {
             throw new RemoteException();
         }
+        return ret;
     }
     public void start(int id) throws RemoteException
     {
@@ -550,6 +572,7 @@ public class Packaging implements ResourceManager
     public boolean commit(int id) throws RemoteException, NoSuchElementException, MissingResourceException
     {
         if (!awake) return true;
+        boolean ret = false;
 
         //WRITE
         // basic loop
@@ -557,7 +580,7 @@ public class Packaging implements ResourceManager
         for (int i = 0; i < managers; i++) {
             if (live[i]) {
                 try {
-                    servers[i].commit(id);
+                    ret = ret || servers[i].commit(id);
                     sent = true;
                 } catch (RemoteException e) {
                     live[i] = false;
@@ -568,7 +591,9 @@ public class Packaging implements ResourceManager
             throw new RemoteException();
         }
 
+        return ret;
     }
+
     public void abort(int id) throws RemoteException, NoSuchElementException
     {
         if (!awake) return;
@@ -590,9 +615,11 @@ public class Packaging implements ResourceManager
             throw new RemoteException();
         }
     }
+
     public boolean shutdown() throws RemoteException
     {
         if (!awake) return true;
+        boolean ret = false;
 
         //WRITE
         // basic loop
@@ -600,7 +627,7 @@ public class Packaging implements ResourceManager
         for (int i = 0; i < managers; i++) {
             if (live[i]) {
                 try {
-                    servers[i].shutdown();
+                    ret = ret || servers[i].shutdown();
                     sent = true;
                 } catch (RemoteException e) {
                     live[i] = false;
@@ -610,5 +637,6 @@ public class Packaging implements ResourceManager
         if (!sent) {
             throw new RemoteException();
         }
+        return ret;
     }
 }

@@ -32,7 +32,7 @@ class TMDispatcher
 	public int start()
 	{
 		int id = newId++;
-		table.put(new Integer(id), new Transaction(id));
+		table.put(new Integer(id), new Transaction(this, id));
 		return id;
 	}
 
@@ -120,6 +120,11 @@ class TMDispatcher
 			get(id).enlist(rm);
 		}
 	}
+
+    public boolean isAwake()
+    {
+        return awake;
+    }
 }
 
 class Transaction
@@ -128,9 +133,11 @@ class Transaction
 	private int id;
 	private Vector<ResourceManager> enlisted;
 	private int timeToLive;
+    private TMDispatcher disp;
 
-	public Transaction(int id)
+	public Transaction(TMDispatcher disp, int id)
 	{
+        this.disp = disp;
 		this.id = id;
 		this.enlisted = new Vector<ResourceManager>();
 		resetTime();
@@ -154,7 +161,7 @@ class Transaction
 			enlisted.add(rm);
 			try
 			{
-				if (awake) rm.start(id);
+				if (disp.isAwake()) rm.start(id);
 			}
 			catch (Exception e)
 			{
@@ -168,7 +175,7 @@ class Transaction
 		{
 			try
 			{
-				if (awake) rm.abort(id);
+				if (disp.isAwake()) rm.abort(id);
 			}
 			catch (Exception e)
 			{
@@ -184,7 +191,7 @@ class Transaction
 		{
 			try
 			{
-				if (awake) return rm.commit(id);
+				if (disp.isAwake()) return rm.commit(id);
 			}
 			catch (Exception e)
 			{
