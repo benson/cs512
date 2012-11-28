@@ -13,22 +13,12 @@ import java.rmi.server.UnicastRemoteObject;
 
 public class Middleware implements ResourceManager
 {
-    static ResourceManager secondary = null;
-
     static ResourceManager flightRM = null;
     static ResourceManager roomRM = null;
     static ResourceManager carRM = null;
     static TMDispatcher tm;
     static LockManager lm;
     static String name = "Group7ResourceManager";
-
-    private void primary()
-    {
-        flightRM.wakeUp();
-        roomRM.wakeUp();
-        carRM.wakeUp();
-        secondary = LocateRegistry.getRegistry(2468).lookup("Group7SecondaryMiddleware");
-    }
 
     public static void main(String args[])
 	{	    
@@ -59,16 +49,6 @@ public class Middleware implements ResourceManager
             e.printStackTrace();
         }
         
-
-
-
-        // THE ARGS LOGIC IS BROKEN
-        
-        // if primary:
-        primary();
-
-
-
         
         /*  CLIENT */
 		if (args.length == 4)
@@ -78,9 +58,9 @@ public class Middleware implements ResourceManager
 		    {
 		        Registry registry = LocateRegistry.getRegistry(server, 2468);
 		        // get the proxy and the remote reference by rmiregistry lookup
-		        flightRM = new Packaging(registry, "Group7FlightRM", 3);
-		        roomRM = new Packaging(registry, "Group7RoomRM", 3);
-		        carRM = new Packaging(registry, "Group7CarRM", 3);
+		        flightRM = (ResourceManager) registry.lookup(args[1]);
+		        roomRM = (ResourceManager) registry.lookup(args[2]);
+		        carRM = (ResourceManager) registry.lookup(args[3]);
 		        if(carRM!=null && flightRM!=null && roomRM!=null)
 			    {
 			        System.out.println("Successful");
@@ -108,14 +88,6 @@ public class Middleware implements ResourceManager
 	//  NOTE: if flightPrice <= 0 and the flight already exists, it maintains its current price
 	public boolean addFlight(int id, int flightNum, int flightSeats, int flightPrice) throws RemoteException, NoSuchElementException, MissingResourceException
 	{
-        if (secondary) {
-            try {
-                secondary.addFlight(id, flightNum, flightSeats, flightPrice);
-            } catch (Exception e) {
-
-            }
-        }
-
 		tm.enlist(id, flightRM);
 		lock(id, Flight.getKey(flightNum), LockManager.WRITE);
 		return flightRM.addFlight(id, flightNum, flightSeats, flightPrice);
@@ -125,13 +97,6 @@ public class Middleware implements ResourceManager
 	
 	public boolean deleteFlight(int id, int flightNum) throws RemoteException, NoSuchElementException, MissingResourceException
 	{
-        if (secondary) {
-            try {
-                secondary.deleteFlight(id, flightNum);
-            } catch (Exception e) {
-
-            }
-        }
 		tm.enlist(id, flightRM);
 		lock(id, Flight.getKey(flightNum), LockManager.WRITE);
 	    return flightRM.deleteFlight(id, flightNum);
