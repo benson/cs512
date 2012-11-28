@@ -114,6 +114,7 @@ public interface ResourceManager extends Remote
     /* reserve an itinerary */
     public boolean itinerary(int id,int customer,Vector flightNumbers,String location, boolean Car, boolean Room)
     throws RemoteException, NoSuchElementException, MissingResourceException;
+
     public int start() throws RemoteException;
     public void start(int id) throws RemoteException;
     public boolean commit(int id) throws RemoteException, NoSuchElementException, MissingResourceException;
