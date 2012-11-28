@@ -20,6 +20,15 @@ public class Middleware implements ResourceManager
     static LockManager lm;
     static String name = "Group7ResourceManager";
 
+    private void primary()
+    {
+        flightRM.wakeUp();
+        roomRM.wakeUp();
+        carRM.wakeUp();
+        tm.wakeUp();
+        secondary = LocateRegistry.getRegistry(2468).lookup("Group7SecondaryMiddleware");
+    }
+
     public static void main(String args[])
 	{	    
 	    // PARAMS: server_where_rms_are_hosted FlightRM RoomRM CarRM
@@ -51,9 +60,10 @@ public class Middleware implements ResourceManager
         
         
         /*  CLIENT */
-		if (args.length == 4)
+		if (args.length >= 1)
 		{
 		    String server = args[0];
+            if (args.length > 1) primary();
 		    try
 		    {
 		        Registry registry = LocateRegistry.getRegistry(server, 2468);
