@@ -107,14 +107,6 @@ public class Middleware implements ResourceManager
 	//  NOTE: if flightPrice <= 0 and the flight already exists, it maintains its current price
 	public boolean addFlight(int id, int flightNum, int flightSeats, int flightPrice) throws RemoteException, NoSuchElementException, MissingResourceException
 	{
-        if (secondary) {
-            try {
-                secondary.addFlight(id, flightNum, flightSeats, flightPrice);
-            } catch (Exception e) {
-
-            }
-        }
-
 		tm.enlist(id, flightRM);
 		lock(id, Flight.getKey(flightNum), LockManager.WRITE);
 		return flightRM.addFlight(id, flightNum, flightSeats, flightPrice);
@@ -124,13 +116,6 @@ public class Middleware implements ResourceManager
 	
 	public boolean deleteFlight(int id, int flightNum) throws RemoteException, NoSuchElementException, MissingResourceException
 	{
-        if (secondary) {
-            try {
-                secondary.deleteFlight(id, flightNum);
-            } catch (Exception e) {
-
-            }
-        }
 		tm.enlist(id, flightRM);
 		lock(id, Flight.getKey(flightNum), LockManager.WRITE);
 	    return flightRM.deleteFlight(id, flightNum);
