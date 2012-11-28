@@ -14,13 +14,20 @@ class TMDispatcher
 	private Vector<Integer> aborted;
 	private int newId = 0;
 	private Timeouter to;
+    boolean awake;
 
 	public TMDispatcher() {
 		table = new Hashtable<Integer, Transaction>();
 		aborted = new Vector<Integer>();
 		to = new Timeouter(this);
+        awake = false;
 		to.start();
 	}
+
+    public void wakeUp()
+    {
+        awake = true;
+    }
 
 	public int start()
 	{
@@ -147,7 +154,7 @@ class Transaction
 			enlisted.add(rm);
 			try
 			{
-				rm.start(id);
+				if (awake) rm.start(id);
 			}
 			catch (Exception e)
 			{
@@ -161,7 +168,7 @@ class Transaction
 		{
 			try
 			{
-				rm.abort(id);
+				if (awake) rm.abort(id);
 			}
 			catch (Exception e)
 			{
@@ -177,7 +184,7 @@ class Transaction
 		{
 			try
 			{
-				return rm.commit(id);
+				if (awake) return rm.commit(id);
 			}
 			catch (Exception e)
 			{

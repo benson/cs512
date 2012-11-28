@@ -1,28 +1,50 @@
-package ResInterface;
-
-
-import java.rmi.Remote;
-import java.rmi.RemoteException;
-
-import java.util.*;
-/** 
- * Simplified version from CSE 593 Univ. of Washington
- *
- * Distributed  System in Java.
- * 
- * failure reporting is done using two pieces, exceptions and boolean 
- * return values.  Exceptions are used for systemy things. Return
- * values are used for operations that would affect the consistency
- * 
- * If there is a boolean return value and you're not sure how it 
- * would be used in your implementation, ignore it.  I used boolean
- * return values in the interface generously to allow flexibility in 
- * implementation.  But don't forget to return true when the operation
- * has succeeded.
- */
-
-public interface ResourceManager extends Remote 
+public class MPackaging implements ResourceManager
 {
+    private int number;
+    private ResourceManager[] mwares;
+    private boolean[] alive;
+
+    public MPackaging(Registry registry, String base; int number)
+    {
+        this.number = number;
+        this.mwares = new ResourceManager[number];
+        this.alive = new boolean[number];
+
+        for (int i = 0; i < number; i++) {
+            try {
+                mwares[i] = registry.lookup(base + new Integer(i).toString());
+                alive[i] = true;
+            } catch (Exception e) {
+                alive[i] = false;
+            }
+        }
+    }
+
+
+
+        boolean hasValue = false;
+        TYPE result;
+        for (int i = 0; i < number; i++) {
+            if (alive[i]) {
+                try {
+                    if (!hasValue) {
+                        mwares[i].wakeUp();
+                    }
+                    result = mwares[i].METHOD(ARGS);
+                    hasValue = true;
+                } catch (Exception e) {
+                    alive[i] = false;
+                }
+            }
+        }
+        if (hasValue) {
+            return result;
+        } else {
+            throw new RemoteException();
+        }
+
+
+
     /* Add seats to a flight.  In general this will be used to create a new
      * flight, but it should be possible to add seats to an existing flight.
      * Adding to an existing flight should overwrite the current price of the
@@ -76,7 +98,7 @@ public interface ResourceManager extends Remote
      * @return success
      */
     public boolean deleteRooms(int id, String location) 
-    throws RemoteException, NoSuchElementException, MissingResourceException;    
+    throws RemoteException, NoSuchElementException, MissingResourceException;
     /* deleteCustomer removes the customer and associated reservations */
     public boolean deleteCustomer(int id,int customer) 
     throws RemoteException, NoSuchElementException, MissingResourceException;
@@ -120,6 +142,4 @@ public interface ResourceManager extends Remote
     public boolean commit(int id) throws RemoteException, NoSuchElementException, MissingResourceException;
     public void abort(int id) throws RemoteException, NoSuchElementException;
     public boolean shutdown() throws RemoteException;
-
-    public void wakeUp() throws RemoteException;
 }

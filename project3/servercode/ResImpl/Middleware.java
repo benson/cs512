@@ -27,6 +27,7 @@ public class Middleware implements ResourceManager
         flightRM.wakeUp();
         roomRM.wakeUp();
         carRM.wakeUp();
+        tm.wakeUp();
         secondary = LocateRegistry.getRegistry(2468).lookup("Group7SecondaryMiddleware");
     }
 
@@ -64,16 +65,14 @@ public class Middleware implements ResourceManager
 
         // THE ARGS LOGIC IS BROKEN
         
-        // if primary:
-        primary();
-
 
 
         
         /*  CLIENT */
-		if (args.length == 4)
+		if (args.length >= 1)
 		{
 		    String server = args[0];
+            if (args.length > 1) primary();
 		    try
 		    {
 		        Registry registry = LocateRegistry.getRegistry(server, 2468);
