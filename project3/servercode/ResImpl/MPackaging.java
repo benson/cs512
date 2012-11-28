@@ -20,17 +20,25 @@ public class MPackaging implements ResourceManager
         }
     }
 
-
-
+    /* Add seats to a flight.  In general this will be used to create a new
+     * flight, but it should be possible to add seats to an existing flight.
+     * Adding to an existing flight should overwrite the current price of the
+     * available seats.
+     *
+     * @return success.
+     */
+    public boolean addFlight(int id, int flightNum, int flightSeats, int flightPrice) 
+	throws RemoteException, NoSuchElementException, MissingResourceException
+    {
         boolean hasValue = false;
-        TYPE result;
+        boolean result;
         for (int i = 0; i < number; i++) {
             if (alive[i]) {
                 try {
                     if (!hasValue) {
                         mwares[i].wakeUp();
                     }
-                    result = mwares[i].METHOD(ARGS);
+                    result = mwares[i].addFlight(id, flightNum, flightSeats, flightPrice);
                     hasValue = true;
                 } catch (Exception e) {
                     alive[i] = false;
@@ -43,38 +51,118 @@ public class MPackaging implements ResourceManager
             throw new RemoteException();
         }
 
-
-
-    /* Add seats to a flight.  In general this will be used to create a new
-     * flight, but it should be possible to add seats to an existing flight.
-     * Adding to an existing flight should overwrite the current price of the
-     * available seats.
-     *
-     * @return success.
-     */
-    public boolean addFlight(int id, int flightNum, int flightSeats, int flightPrice) 
-	throws RemoteException, NoSuchElementException, MissingResourceException;
+    }
     
     /* Add cars to a location.  
      * This should look a lot like addFlight, only keyed on a string location
      * instead of a flight number.
      */
     public boolean addCars(int id, String location, int numCars, int price) 
-	throws RemoteException, NoSuchElementException, MissingResourceException;
-   
+	throws RemoteException, NoSuchElementException, MissingResourceException
+    {
+        boolean hasValue = false;
+        boolean result;
+        for (int i = 0; i < number; i++) {
+            if (alive[i]) {
+                try {
+                    if (!hasValue) {
+                        mwares[i].wakeUp();
+                    }
+                    result = mwares[i].addCars(id, location, numCars, price);
+                    hasValue = true;
+                } catch (Exception e) {
+                    alive[i] = false;
+                }
+            }
+        }
+        if (hasValue) {
+            return result;
+        } else {
+            throw new RemoteException();
+        }
+
+    }
     /* Add rooms to a location.  
      * This should look a lot like addFlight, only keyed on a string location
      * instead of a flight number.
      */
     public boolean addRooms(int id, String location, int numRooms, int price) 
-    throws RemoteException, NoSuchElementException, MissingResourceException;
-			    
+    throws RemoteException, NoSuchElementException, MissingResourceException
+    {
+        boolean hasValue = false;
+        boolean result;
+        for (int i = 0; i < number; i++) {
+            if (alive[i]) {
+                try {
+                    if (!hasValue) {
+                        mwares[i].wakeUp();
+                    }
+                    result = mwares[i].addRooms(id, location, numRooms, price) 
+                    hasValue = true;
+                } catch (Exception e) {
+                    alive[i] = false;
+                }
+            }
+        }
+        if (hasValue) {
+            return result;
+        } else {
+            throw new RemoteException();
+        }
+
+    }
     /* new customer just returns a unique customer identifier */
     public int newCustomer(int id) 
-    throws RemoteException, NoSuchElementException, MissingResourceException;    
+    throws RemoteException, NoSuchElementException, MissingResourceException
+    {
+        boolean hasValue = false;
+        int result;
+        for (int i = 0; i < number; i++) {
+            if (alive[i]) {
+                try {
+                    if (!hasValue) {
+                        mwares[i].wakeUp();
+                    }
+                    result = mwares[i].newCustomer(id) ;
+                    hasValue = true;
+                } catch (Exception e) {
+                    alive[i] = false;
+                }
+            }
+        }
+        if (hasValue) {
+            return result;
+        } else {
+            throw new RemoteException();
+        }
+
+    } 
     /* new customer with providing id */
     public boolean newCustomer(int id, int cid)
-    throws RemoteException, NoSuchElementException, MissingResourceException;
+    throws RemoteException, NoSuchElementException, MissingResourceException
+    {
+        boolean hasValue = false;
+        boolean result;
+        for (int i = 0; i < number; i++) {
+            if (alive[i]) {
+                try {
+                    if (!hasValue) {
+                        mwares[i].wakeUp();
+                    }
+                    result = mwares[i].newCustomer(id, cid);
+                    hasValue = true;
+                } catch (Exception e) {
+                    alive[i] = false;
+                }
+            }
+        }
+        if (hasValue) {
+            return result;
+        } else {
+            throw new RemoteException();
+        }
+
+    }
     /**
      *   Delete the entire flight.
      *   deleteflight implies whole deletion of the flight.  
@@ -84,62 +172,520 @@ public class MPackaging implements ResourceManager
      * @return success.
      */   
     public boolean deleteFlight(int id, int flightNum) 
-    throws RemoteException, NoSuchElementException, MissingResourceException;    
+    throws RemoteException, NoSuchElementException, MissingResourceException  
+    {
+        boolean hasValue = false;
+        boolean result;
+        for (int i = 0; i < number; i++) {
+            if (alive[i]) {
+                try {
+                    if (!hasValue) {
+                        mwares[i].wakeUp();
+                    }
+                    result = mwares[i].deleteFlight(id, flightNum) ;
+                    hasValue = true;
+                } catch (Exception e) {
+                    alive[i] = false;
+                }
+            }
+        }
+        if (hasValue) {
+            return result;
+        } else {
+            throw new RemoteException();
+        }
+
+    } 
     /* Delete all Cars from a location.
      * It may not succeed if there are reservations for this location
      *
      * @return success
      */		    
     public boolean deleteCars(int id, String location) 
-    throws RemoteException, NoSuchElementException, MissingResourceException;
+    throws RemoteException, NoSuchElementException, MissingResourceException
+    {
+        boolean hasValue = false;
+        boolean result;
+        for (int i = 0; i < number; i++) {
+            if (alive[i]) {
+                try {
+                    if (!hasValue) {
+                        mwares[i].wakeUp();
+                    }
+                    result = mwares[i].deleteCars(id, location) ;
+                    hasValue = true;
+                } catch (Exception e) {
+                    alive[i] = false;
+                }
+            }
+        }
+        if (hasValue) {
+            return result;
+        } else {
+            throw new RemoteException();
+        }
+
+    }
     /* Delete all Rooms from a location.
      * It may not succeed if there are reservations for this location.
      *
      * @return success
      */
     public boolean deleteRooms(int id, String location) 
-    throws RemoteException, NoSuchElementException, MissingResourceException;
+    throws RemoteException, NoSuchElementException, MissingResourceException
+    {
+        boolean hasValue = false;
+        boolean result;
+        for (int i = 0; i < number; i++) {
+            if (alive[i]) {
+                try {
+                    if (!hasValue) {
+                        mwares[i].wakeUp();
+                    }
+                    result = mwares[i].deleteRooms(id, location) ;
+                    hasValue = true;
+                } catch (Exception e) {
+                    alive[i] = false;
+                }
+            }
+        }
+        if (hasValue) {
+            return result;
+        } else {
+            throw new RemoteException();
+        }
+
+    }
     /* deleteCustomer removes the customer and associated reservations */
     public boolean deleteCustomer(int id,int customer) 
-    throws RemoteException, NoSuchElementException, MissingResourceException;
+    throws RemoteException, NoSuchElementException, MissingResourceException
+    {
+        boolean hasValue = false;
+        boolean result;
+        for (int i = 0; i < number; i++) {
+            if (alive[i]) {
+                try {
+                    if (!hasValue) {
+                        mwares[i].wakeUp();
+                    }
+                    result = mwares[i].deleteCustomer(id, customer) ;
+                    hasValue = true;
+                } catch (Exception e) {
+                    alive[i] = false;
+                }
+            }
+        }
+        if (hasValue) {
+            return result;
+        } else {
+            throw new RemoteException();
+        }
+
+    }
     /* queryFlight returns the number of empty seats. */
     public int queryFlight(int id, int flightNumber) 
-    throws RemoteException, NoSuchElementException, MissingResourceException;
+    throws RemoteException, NoSuchElementException, MissingResourceException
+    {
+        boolean hasValue = false;
+        int result;
+        for (int i = 0; i < number; i++) {
+            if (alive[i]) {
+                try {
+                    if (!hasValue) {
+                        mwares[i].wakeUp();
+                    }
+                    result = mwares[i].queryFlight(id, flightNumber);
+                    hasValue = true;
+                } catch (Exception e) {
+                    alive[i] = false;
+                }
+            }
+        }
+        if (hasValue) {
+            return result;
+        } else {
+            throw new RemoteException();
+        }
+
+    }
     /* return the number of cars available at a location */
     public int queryCars(int id, String location) 
-    throws RemoteException, NoSuchElementException, MissingResourceException;
+    throws RemoteException, NoSuchElementException, MissingResourceException
+    {
+        boolean hasValue = false;
+        int result;
+        for (int i = 0; i < number; i++) {
+            if (alive[i]) {
+                try {
+                    if (!hasValue) {
+                        mwares[i].wakeUp();
+                    }
+                    result = mwares[i].queryCars(id, location);
+                    hasValue = true;
+                } catch (Exception e) {
+                    alive[i] = false;
+                }
+            }
+        }
+        if (hasValue) {
+            return result;
+        } else {
+            throw new RemoteException();
+        }
+
+    }
     /* return the number of rooms available at a location */
     public int queryRooms(int id, String location) 
-    throws RemoteException, NoSuchElementException, MissingResourceException;
+    throws RemoteException, NoSuchElementException, MissingResourceException
+    {
+        boolean hasValue = false;
+        int result;
+        for (int i = 0; i < number; i++) {
+            if (alive[i]) {
+                try {
+                    if (!hasValue) {
+                        mwares[i].wakeUp();
+                    }
+                    result = mwares[i].queryRooms(id, location);
+                    hasValue = true;
+                } catch (Exception e) {
+                    alive[i] = false;
+                }
+            }
+        }
+        if (hasValue) {
+            return result;
+        } else {
+            throw new RemoteException();
+        }
+
+    }
     /* return a bill */
     public String queryCustomerInfo(int id,int customer) 
-    throws RemoteException, NoSuchElementException, MissingResourceException;    
+    throws RemoteException, NoSuchElementException, MissingResourceException 
+    {
+        boolean hasValue = false;
+        String result;
+        for (int i = 0; i < number; i++) {
+            if (alive[i]) {
+                try {
+                    if (!hasValue) {
+                        mwares[i].wakeUp();
+                    }
+                    result = mwares[i].queryCustomerInfo(id, customer);
+                    hasValue = true;
+                } catch (Exception e) {
+                    alive[i] = false;
+                }
+            }
+        }
+        if (hasValue) {
+            return result;
+        } else {
+            throw new RemoteException();
+        }
+
+    }  
     /* queryFlightPrice returns the price of a seat on this flight. */
     public int queryFlightPrice(int id, int flightNumber) 
-    throws RemoteException, NoSuchElementException, MissingResourceException;
+    throws RemoteException, NoSuchElementException, MissingResourceException
+    {
+        boolean hasValue = false;
+        int result;
+        for (int i = 0; i < number; i++) {
+            if (alive[i]) {
+                try {
+                    if (!hasValue) {
+                        mwares[i].wakeUp();
+                    }
+                    result = mwares[i].queryFlightPrice(id, flightNumber);
+                    hasValue = true;
+                } catch (Exception e) {
+                    alive[i] = false;
+                }
+            }
+        }
+        if (hasValue) {
+            return result;
+        } else {
+            throw new RemoteException();
+        }
+
+    }
     /* return the price of a car at a location */
     public int queryCarsPrice(int id, String location) 
-    throws RemoteException, NoSuchElementException, MissingResourceException;
+    throws RemoteException, NoSuchElementException, MissingResourceException
+    {
+        boolean hasValue = false;
+        int result;
+        for (int i = 0; i < number; i++) {
+            if (alive[i]) {
+                try {
+                    if (!hasValue) {
+                        mwares[i].wakeUp();
+                    }
+                    result = mwares[i].queryCarsPrice(id, location);
+                    hasValue = true;
+                } catch (Exception e) {
+                    alive[i] = false;
+                }
+            }
+        }
+        if (hasValue) {
+            return result;
+        } else {
+            throw new RemoteException();
+        }
+
+    }
     /* return the price of a room at a location */
     public int queryRoomsPrice(int id, String location) 
-    throws RemoteException, NoSuchElementException, MissingResourceException;
+    throws RemoteException, NoSuchElementException, MissingResourceException
+    {
+        boolean hasValue = false;
+        int result;
+        for (int i = 0; i < number; i++) {
+            if (alive[i]) {
+                try {
+                    if (!hasValue) {
+                        mwares[i].wakeUp();
+                    }
+                    result = mwares[i].queryRoomsPrice(id, location);
+                    hasValue = true;
+                } catch (Exception e) {
+                    alive[i] = false;
+                }
+            }
+        }
+        if (hasValue) {
+            return result;
+        } else {
+            throw new RemoteException();
+        }
+
+    }
     /* Reserve a seat on this flight*/
     public boolean reserveFlight(int id, int customer, int flightNumber) 
-    throws RemoteException, NoSuchElementException, MissingResourceException;
+    throws RemoteException, NoSuchElementException, MissingResourceException
+    {
+        boolean hasValue = false;
+        boolean result;
+        for (int i = 0; i < number; i++) {
+            if (alive[i]) {
+                try {
+                    if (!hasValue) {
+                        mwares[i].wakeUp();
+                    }
+                    result = mwares[i].reserveFlight(id, customer, flightNumber);
+                    hasValue = true;
+                } catch (Exception e) {
+                    alive[i] = false;
+                }
+            }
+        }
+        if (hasValue) {
+            return result;
+        } else {
+            throw new RemoteException();
+        }
+
+    }
     /* reserve a car at this location */
     public boolean reserveCar(int id, int customer, String location) 
-    throws RemoteException, NoSuchElementException, MissingResourceException;
+    throws RemoteException, NoSuchElementException, MissingResourceException
+    {
+        boolean hasValue = false;
+        boolean result;
+        for (int i = 0; i < number; i++) {
+            if (alive[i]) {
+                try {
+                    if (!hasValue) {
+                        mwares[i].wakeUp();
+                    }
+                    result = mwares[i].reserveCar(id, customer, location);
+                    hasValue = true;
+                } catch (Exception e) {
+                    alive[i] = false;
+                }
+            }
+        }
+        if (hasValue) {
+            return result;
+        } else {
+            throw new RemoteException();
+        }
+
+    }
     /* reserve a room certain at this location */
     public boolean reserveRoom(int id, int customer, String location) 
-    throws RemoteException, NoSuchElementException, MissingResourceException;
+    throws RemoteException, NoSuchElementException, MissingResourceException
+    {
+        boolean hasValue = false;
+        boolean result;
+        for (int i = 0; i < number; i++) {
+            if (alive[i]) {
+                try {
+                    if (!hasValue) {
+                        mwares[i].wakeUp();
+                    }
+                    result = mwares[i].reserveRoom(id, customer, location);
+                    hasValue = true;
+                } catch (Exception e) {
+                    alive[i] = false;
+                }
+            }
+        }
+        if (hasValue) {
+            return result;
+        } else {
+            throw new RemoteException();
+        }
+
+    }
 
     /* reserve an itinerary */
     public boolean itinerary(int id,int customer,Vector flightNumbers,String location, boolean Car, boolean Room)
-    throws RemoteException, NoSuchElementException, MissingResourceException;
+    throws RemoteException, NoSuchElementException, MissingResourceException
+    {
+        boolean hasValue = false;
+        boolean result;
+        for (int i = 0; i < number; i++) {
+            if (alive[i]) {
+                try {
+                    if (!hasValue) {
+                        mwares[i].wakeUp();
+                    }
+                    result = mwares[i].itinerary(id,customer,flightNumbers,location, Car, Room);
+                    hasValue = true;
+                } catch (Exception e) {
+                    alive[i] = false;
+                }
+            }
+        }
+        if (hasValue) {
+            return result;
+        } else {
+            throw new RemoteException();
+        }
 
-    public int start() throws RemoteException;
-    public void start(int id) throws RemoteException;
-    public boolean commit(int id) throws RemoteException, NoSuchElementException, MissingResourceException;
-    public void abort(int id) throws RemoteException, NoSuchElementException;
-    public boolean shutdown() throws RemoteException;
+    }
+
+    public int start() throws RemoteException
+    {
+        boolean hasValue = false;
+        int result;
+        for (int i = 0; i < number; i++) {
+            if (alive[i]) {
+                try {
+                    if (!hasValue) {
+                        mwares[i].wakeUp();
+                    }
+                    result = mwares[i].start();
+                    hasValue = true;
+                } catch (Exception e) {
+                    alive[i] = false;
+                }
+            }
+        }
+        if (hasValue) {
+            return result;
+        } else {
+            throw new RemoteException();
+        }
+
+    }
+    public void start(int id) throws RemoteException
+    {
+        boolean hasValue = false;
+        for (int i = 0; i < number; i++) {
+            if (alive[i]) {
+                try {
+                    if (!hasValue) {
+                        mwares[i].wakeUp();
+                    }
+                    mwares[i].start(id);
+                    hasValue = true;
+                } catch (Exception e) {
+                    alive[i] = false;
+                }
+            }
+        }
+        if (hasValue) {
+            return;
+        } else {
+            throw new RemoteException();
+        }
+
+    }
+    public boolean commit(int id) throws RemoteException, NoSuchElementException, MissingResourceException
+    {
+        boolean hasValue = false;
+        boolean result;
+        for (int i = 0; i < number; i++) {
+            if (alive[i]) {
+                try {
+                    if (!hasValue) {
+                        mwares[i].wakeUp();
+                    }
+                    result = mwares[i].commit(id);
+                    hasValue = true;
+                } catch (Exception e) {
+                    alive[i] = false;
+                }
+            }
+        }
+        if (hasValue) {
+            return result;
+        } else {
+            throw new RemoteException();
+        }
+
+    }
+    public void abort(int id) throws RemoteException, NoSuchElementException
+    {
+        boolean hasValue = false;
+        for (int i = 0; i < number; i++) {
+            if (alive[i]) {
+                try {
+                    if (!hasValue) {
+                        mwares[i].wakeUp();
+                    }
+                    mwares[i].abort(id);
+                    hasValue = true;
+                } catch (Exception e) {
+                    alive[i] = false;
+                }
+            }
+        }
+        if (hasValue) {
+            return;
+        } else {
+            throw new RemoteException();
+        }
+
+    }
+    public boolean shutdown() throws RemoteException
+    {
+        boolean hasValue = false;
+        boolean result;
+        for (int i = 0; i < number; i++) {
+            if (alive[i]) {
+                try {
+                    if (!hasValue) {
+                        mwares[i].wakeUp();
+                    }
+                    result = mwares[i].shutdown();
+                    hasValue = true;
+                } catch (Exception e) {
+                    alive[i] = false;
+                }
+            }
+        }
+        if (hasValue) {
+            return result;
+        } else {
+            throw new RemoteException();
+        }
+
+    }
 }
