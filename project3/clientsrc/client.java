@@ -1,5 +1,6 @@
 import java.rmi.*;
 import ResInterface.*;
+import ResImpl.*;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
@@ -44,9 +45,10 @@ public class client
 	    try 
 		{
 		    // get a reference to the rmiregistry
-		    Registry registry = LocateRegistry.getRegistry(server, 2468);
+		    Registry registry = LocateRegistry.getRegistry(server, 3579);
 		    // get the proxy and the remote reference by rmiregistry lookup
-		    rm = (ResourceManager) registry.lookup("Group7ResourceManager");
+		    //rm = (ResourceManager) registry.lookup("Group7ResourceManager");
+		    rm = new MPackaging(registry, "Group7ResourceManager", 2);
 		    if(rm!=null)
 			{
 			    System.out.println("Successful");

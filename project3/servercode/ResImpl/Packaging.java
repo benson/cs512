@@ -120,11 +120,13 @@ public class Packaging implements ResourceManager
 
         boolean ret = false;
         boolean sent = false;
+        boolean temp;
         int first = 0;
         for (int i = 0; i < managers; i++) {
             if (live[i]) {
                 try {
-                    ret = ret || servers[i].addRooms(id, location, numRooms, price);
+                    temp = servers[i].addRooms(id, location, numRooms, price);
+                    ret = ret || temp;
                     sent = true;
                 } catch (RemoteException e) {
                     live[i] = false;
@@ -177,10 +179,12 @@ public class Packaging implements ResourceManager
         //WRITE
         // basic loop
         boolean sent = false;
+        boolean temp;
         for (int i = 0; i < managers; i++) {
             if (live[i]) {
                 try {
-                    ret = ret || servers[i].newCustomer(id, cid);
+                    temp = servers[i].newCustomer(id, cid);
+                    ret = ret || temp;
                     sent = true;
                 } catch (RemoteException e) {
                     live[i] = false;
@@ -210,10 +214,12 @@ public class Packaging implements ResourceManager
         //WRITE
         // basic loop
         boolean sent = false;
+        boolean temp;
         for (int i = 0; i < managers; i++) {
             if (live[i]) {
                 try {
-                    ret = ret || servers[i].deleteFlight(id, flightNum);
+                    temp = servers[i].deleteFlight(id, flightNum);
+                    ret = ret || temp;
                     sent = true;
                 } catch (RemoteException e) {
                     live[i] = false;
@@ -235,10 +241,12 @@ public class Packaging implements ResourceManager
         //WRITE
         // basic loop
         boolean sent = false;
+        boolean temp;
         for (int i = 0; i < managers; i++) {
             if (live[i]) {
                 try {
-                    ret = ret || servers[i].deleteCars(id, location);
+                    temp = servers[i].deleteCars(id, location);
+                    ret = ret || temp;
                     sent = true;
                 } catch (RemoteException e) {
                     live[i] = false;
@@ -260,10 +268,12 @@ public class Packaging implements ResourceManager
         //WRITE
         // basic loop
         boolean sent = false;
+        boolean temp;
         for (int i = 0; i < managers; i++) {
             if (live[i]) {
                 try {
-                    ret = ret || servers[i].deleteRooms(id, location);
+                    temp = servers[i].deleteRooms(id, location);
+                    ret = ret || temp;
                     sent = true;
                 } catch (RemoteException e) {
                     live[i] = false;
@@ -285,10 +295,12 @@ public class Packaging implements ResourceManager
         //WRITE
         // basic loop
         boolean sent = false;
+        boolean temp;
         for (int i = 0; i < managers; i++) {
             if (live[i]) {
                 try {
-                    ret = ret || servers[i].deleteCustomer(id, customer);
+                    temp = servers[i].deleteCustomer(id, customer);
+                    ret = ret || temp;
                     sent = true;
                 } catch (RemoteException e) {
                     live[i] = false;
@@ -368,6 +380,7 @@ public class Packaging implements ResourceManager
         for (int i = 0; i < managers; i++) {
             if (live[i]) {
                 try {
+                    System.out.println("In querycustomerinfo PACKAGING");
                     return servers[i].queryCustomerInfo(id, customer);
                 } catch (RemoteException e) {
                     live[i] = false;
@@ -443,10 +456,12 @@ public class Packaging implements ResourceManager
         //WRITE
         // basic loop
         boolean sent = false;
+        boolean temp;
         for (int i = 0; i < managers; i++) {
             if (live[i]) {
                 try {
-                    ret = ret || servers[i].reserveFlight(id, customer, flightNumber);
+                    temp = servers[i].reserveFlight(id, customer, flightNumber);
+                    ret = ret || temp;
                     sent = true;
                 } catch (RemoteException e) {
                     live[i] = false;
@@ -468,10 +483,12 @@ public class Packaging implements ResourceManager
         //WRITE
         // basic loop
         boolean sent = false;
+        boolean temp;
         for (int i = 0; i < managers; i++) {
             if (live[i]) {
                 try {
-                    ret = ret || servers[i].reserveCar(id, customer, location);
+                    temp = servers[i].reserveCar(id, customer, location);
+                    ret = ret || temp;
                     sent = true;
                 } catch (RemoteException e) {
                     live[i] = false;
@@ -489,14 +506,16 @@ public class Packaging implements ResourceManager
         throws RemoteException, NoSuchElementException, MissingResourceException
     {
         if (!awake) return true;
-
+        boolean ret = false;
         //WRITE
         // basic loop
         boolean sent = false;
+        boolean temp;
         for (int i = 0; i < managers; i++) {
             if (live[i]) {
                 try {
-                    servers[i].reserveRoom(id, customer, location);
+                    temp = servers[i].reserveRoom(id, customer, location); 
+                    ret = ret || temp;                
                     sent = true;
                 } catch (RemoteException e) {
                     live[i] = false;
@@ -518,10 +537,12 @@ public class Packaging implements ResourceManager
         //WRITE
         // basic loop
         boolean sent = false;
+        boolean temp;
         for (int i = 0; i < managers; i++) {
             if (live[i]) {
                 try {
-                    ret = ret || servers[i].itinerary(id, customer, flightNumbers, location, Car, Room);
+                    temp = servers[i].itinerary(id, customer, flightNumbers, location, Car, Room);
+                    ret = ret || temp;
                     sent = true;
                 } catch (RemoteException e) {
                     live[i] = false;
@@ -591,10 +612,12 @@ public class Packaging implements ResourceManager
         //WRITE
         // basic loop
         boolean sent = false;
+        boolean temp;
         for (int i = 0; i < managers; i++) {
             if (live[i]) {
                 try {
-                    ret = ret || servers[i].commit(id);
+                    temp = servers[i].commit(id);
+                    ret = ret || temp;
                     sent = true;
                 } catch (RemoteException e) {
                     live[i] = false;
@@ -638,10 +661,12 @@ public class Packaging implements ResourceManager
         //WRITE
         // basic loop
         boolean sent = false;
+        boolean temp;
         for (int i = 0; i < managers; i++) {
             if (live[i]) {
                 try {
-                    ret = ret || servers[i].shutdown();
+                    temp = servers[i].shutdown();
+                    ret = ret || temp;
                     sent = true;
                 } catch (RemoteException e) {
                     live[i] = false;

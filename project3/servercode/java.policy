@@ -1,4 +1,4 @@
-grant codeBase "file:$HOME/cs512/project2/project1stuff/servercode" {
+grant codeBase "file:$HOME/cs512/project3/servercode" {
     permission java.security.AllPermission;
 };
 

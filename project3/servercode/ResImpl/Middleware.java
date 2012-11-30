@@ -230,9 +230,13 @@ public class Middleware implements ResourceManager
 	    synchronized(carRM){
 	        synchronized(flightRM){
 	            synchronized(roomRM){
+	            	System.out.println("In querycustomerinfo MIDDLEWARE");
 	                carBill = carRM.queryCustomerInfo(id, customerID);
+	                System.out.println("carbill = " + carBill);
 	                flightBill = flightRM.queryCustomerInfo(id, customerID);
+	                System.out.println("flightbill = " + flightBill);
 	                roomBill = roomRM.queryCustomerInfo(id, customerID);
+	                System.out.println("roombill = " + roomBill);
 
                     i = flightBill.indexOf('\n') + 1;
 	                if (i != flightBill.length()){
@@ -249,6 +253,7 @@ public class Middleware implements ResourceManager
 	            }
 	        }
 	    }
+	    System.out.println("In the end of MIDDLEWARE query customer, bill = " + carBill + flightBill + roomBill);
 	    return(carBill + flightBill + roomBill);
 	} 
 

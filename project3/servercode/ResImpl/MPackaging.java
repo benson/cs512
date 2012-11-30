@@ -138,17 +138,22 @@ public class MPackaging implements ResourceManager
         for (int i = 0; i < number; i++) {
             if (alive[i]) {
                 try {
-                    if (!hasValue) {
+                    if (result == -1)   // try to wake up first middleware
                         mwares[i].wakeUp();
-                    }
-                    result = mwares[i].newCustomer(id) ;
-                    hasValue = true;
+                    if(result != -1)    // if result has already been set - use it
+                        mwares[i].newCustomer(id, result);
+                    else    // result hasn't been set, set it 
+                        result = mwares[i].newCustomer(id); 
                 } catch (Exception e) {
                     alive[i] = false;
+                    System.out.println("Setting alive[" + i + "] to false");
+                    abort(id);
+                    System.out.println("after aborting");
+                    throw new MissingResourceException("foo", "bar", "vars");
                 }
             }
         }
-        if (hasValue) {
+        if (result != -1) {
             return result;
         } else {
             throw new RemoteException();
@@ -171,6 +176,10 @@ public class MPackaging implements ResourceManager
                     hasValue = true;
                 } catch (Exception e) {
                     alive[i] = false;
+                    System.out.println("Setting alive[" + i + "] to false");
+                    abort(id);
+                    System.out.println("after aborting");
+                    throw new MissingResourceException("foo", "bar", "vars");
                 }
             }
         }
@@ -305,7 +314,7 @@ public class MPackaging implements ResourceManager
     throws RemoteException, NoSuchElementException, MissingResourceException
     {
         boolean hasValue = false;
-        int result = -1;
+        int temp = -1, result = -1;
         for (int i = 0; i < number; i++) {
             if (alive[i]) {
                 try {
@@ -331,15 +340,19 @@ public class MPackaging implements ResourceManager
     throws RemoteException, NoSuchElementException, MissingResourceException
     {
         boolean hasValue = false;
-        int result = -1;
+        int temp = -1, result = -1;
         for (int i = 0; i < number; i++) {
             if (alive[i]) {
                 try {
                     if (!hasValue) {
                         mwares[i].wakeUp();
                     }
-                    result = mwares[i].queryCars(id, location);
-                    hasValue = true;
+                    temp = mwares[i].queryCars(id, location);
+                    if (!hasValue)
+                    {
+                        result = temp;
+                        hasValue = true;
+                    } 
                 } catch (Exception e) {
                     alive[i] = false;
                 }
@@ -357,15 +370,19 @@ public class MPackaging implements ResourceManager
     throws RemoteException, NoSuchElementException, MissingResourceException
     {
         boolean hasValue = false;
-        int result = -1;
+        int temp = -1, result = -1;
         for (int i = 0; i < number; i++) {
             if (alive[i]) {
                 try {
                     if (!hasValue) {
                         mwares[i].wakeUp();
                     }
-                    result = mwares[i].queryRooms(id, location);
-                    hasValue = true;
+                    temp = mwares[i].queryRooms(id, location);
+                    if (!hasValue)
+                    {
+                        result = temp;
+                        hasValue = true;
+                    }                    
                 } catch (Exception e) {
                     alive[i] = false;
                 }
@@ -383,15 +400,19 @@ public class MPackaging implements ResourceManager
     throws RemoteException, NoSuchElementException, MissingResourceException 
     {
         boolean hasValue = false;
-        String result = "";
+        String temp = "";
+        String result = null;
         for (int i = 0; i < number; i++) {
             if (alive[i]) {
                 try {
                     if (!hasValue) {
                         mwares[i].wakeUp();
                     }
-                    result = mwares[i].queryCustomerInfo(id, customer);
-                    hasValue = true;
+                    temp = mwares[i].queryCustomerInfo(id, customer);
+                    if (!hasValue) {
+                        result = temp;
+                        hasValue = true;
+                    }
                 } catch (Exception e) {
                     alive[i] = false;
                 }
@@ -409,15 +430,18 @@ public class MPackaging implements ResourceManager
     throws RemoteException, NoSuchElementException, MissingResourceException
     {
         boolean hasValue = false;
-        int result = -1;
+        int temp = -1, result = -1;
         for (int i = 0; i < number; i++) {
             if (alive[i]) {
                 try {
                     if (!hasValue) {
                         mwares[i].wakeUp();
                     }
-                    result = mwares[i].queryFlightPrice(id, flightNumber);
-                    hasValue = true;
+                    temp = mwares[i].queryFlightPrice(id, flightNumber);
+                    if(!hasValue) {
+                        result = temp;
+                        hasValue = true;
+                    }                    
                 } catch (Exception e) {
                     alive[i] = false;
                 }
@@ -435,15 +459,18 @@ public class MPackaging implements ResourceManager
     throws RemoteException, NoSuchElementException, MissingResourceException
     {
         boolean hasValue = false;
-        int result = -1;
+        int temp = -1, result = -1;
         for (int i = 0; i < number; i++) {
             if (alive[i]) {
                 try {
                     if (!hasValue) {
                         mwares[i].wakeUp();
                     }
-                    result = mwares[i].queryCarsPrice(id, location);
-                    hasValue = true;
+                    temp = mwares[i].queryCarsPrice(id, location);
+                    if(!hasValue) {
+                        result = temp;
+                        hasValue = true;
+                    } 
                 } catch (Exception e) {
                     alive[i] = false;
                 }
@@ -461,15 +488,19 @@ public class MPackaging implements ResourceManager
     throws RemoteException, NoSuchElementException, MissingResourceException
     {
         boolean hasValue = false;
-        int result = -1;
+        int temp = -1, result = -1;
         for (int i = 0; i < number; i++) {
             if (alive[i]) {
                 try {
                     if (!hasValue) {
                         mwares[i].wakeUp();
                     }
-                    result = mwares[i].queryRoomsPrice(id, location);
-                    hasValue = true;
+                    temp = mwares[i].queryRoomsPrice(id, location);
+                    if (!hasValue)
+                    {
+                        result = temp;
+                        hasValue = true;
+                    } 
                 } catch (Exception e) {
                     alive[i] = false;
                 }
@@ -577,6 +608,10 @@ public class MPackaging implements ResourceManager
                     hasValue = true;
                 } catch (Exception e) {
                     alive[i] = false;
+                    System.out.println("Setting alive[" + i + "] to false");
+                    abort(id);
+                    System.out.println("after aborting");
+                    throw new MissingResourceException("foo", "bar", "vars");
                 }
             }
         }
@@ -591,15 +626,19 @@ public class MPackaging implements ResourceManager
     public int start() throws RemoteException
     {
         boolean hasValue = false;
-        int result = -1;
+        int temp = -1, result = -1;
         for (int i = 0; i < number; i++) {
             if (alive[i]) {
                 try {
                     if (!hasValue) {
                         mwares[i].wakeUp();
                     }
-                    result = mwares[i].start();
-                    hasValue = true;
+                    temp = mwares[i].start();
+                    if (!hasValue)
+                    {
+                        result = temp;
+                        hasValue = true;
+                    } 
                 } catch (Exception e) {
                     alive[i] = false;
                 }
@@ -664,6 +703,7 @@ public class MPackaging implements ResourceManager
         boolean hasValue = false;
         for (int i = 0; i < number; i++) {
             if (alive[i]) {
+                System.out.println("In abort, " + i + " is alive.");
                 try {
                     if (!hasValue) {
                         mwares[i].wakeUp();
