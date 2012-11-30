@@ -74,20 +74,13 @@ public class MPackaging implements ResourceManager
         boolean hasValue = false;
         boolean result = false;
         for (int i = 0; i < number; i++) {
-            System.out.println("Above alive, i = " + i);
             if (alive[i]) {
-                System.out.println("Something is alive");
                 try {
-                    System.out.println("Trying");
                     if (!hasValue) {
-                        System.out.println("Waking up");
                         mwares[i].wakeUp();
-                        System.out.println("Woke up mwares[ " + i + "]");
                         result = mwares[i].addCars(id, location, numCars, price);
-                        System.out.println("After setting result");
                         hasValue = true;
                     }
-                    System.out.println("After setting hasvalue");
                 } catch (Exception e) {
                     alive[i] = false;
                 }
@@ -146,9 +139,7 @@ public class MPackaging implements ResourceManager
                         result = mwares[i].newCustomer(id); 
                 } catch (Exception e) {
                     alive[i] = false;
-                    System.out.println("Setting alive[" + i + "] to false");
                     abort(id);
-                    System.out.println("after aborting");
                     throw new MissingResourceException("foo", "bar", "vars");
                 }
             }
@@ -176,9 +167,7 @@ public class MPackaging implements ResourceManager
                     hasValue = true;
                 } catch (Exception e) {
                     alive[i] = false;
-                    System.out.println("Setting alive[" + i + "] to false");
                     abort(id);
-                    System.out.println("after aborting");
                     throw new MissingResourceException("foo", "bar", "vars");
                 }
             }
@@ -608,9 +597,7 @@ public class MPackaging implements ResourceManager
                     hasValue = true;
                 } catch (Exception e) {
                     alive[i] = false;
-                    System.out.println("Setting alive[" + i + "] to false");
                     abort(id);
-                    System.out.println("after aborting");
                     throw new MissingResourceException("foo", "bar", "vars");
                 }
             }
@@ -703,7 +690,6 @@ public class MPackaging implements ResourceManager
         boolean hasValue = false;
         for (int i = 0; i < number; i++) {
             if (alive[i]) {
-                System.out.println("In abort, " + i + " is alive.");
                 try {
                     if (!hasValue) {
                         mwares[i].wakeUp();
